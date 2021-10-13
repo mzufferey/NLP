@@ -337,3 +337,119 @@ aim at providing interpretability by exposing the set of operations adopted to a
 * Multi-hop question decomposition: The approaches in this category aim at breaking multi-hop ques- tions into single-hop queries that are simpler to solve.
 
 Contrastive Explanations: while contrastive and conterfactual explanations are becoming central in Explainable AI (Miller, 2019), this type of explanations is still under-explored for MRC.
+
+
+
+#### Learning to Explain: Datasets and Models for Identifying Valid Reasoning Chains in Multihop Question-Answering - Chains and Clark 2018
+
+**multihop question-answering,** where multiple facts are needed to derive an answer.
+
+a chain ofreasoning leading to an answer, can help a user assess an answer’s validity.
+
+We are interested in questions where the decom-
+position into subquestions - hence the explanation structure - is not evident from the question, but has to be found. For
+
+For example, “Does a suit of armor conduct electricity?” might be answered (hence explained) by first identifying what material armor is made of, even though the question itself does not mention materials.
+
+This contrasts with earlier multihop QA datasets, e.g., HotpotQA (Yang et al., 2018), where the explanation structure is evident in the question itself. For example, “What nation- ality was James Miller’s wife?” implies a chain of reasoning to first finds Miller’s wife, then her nationality. Such
+
+For questions requiring inference, the focus of
+this paper, an explanation is often taken as the chain of steps (typically sentences) leading to an answer
+
+#### Dynamic Semantic Graph Construction and Reasoning for Explainable Multi-hop Science Question Answering - Xu et al. 2019
+
+Abstract Meaning Representation (AMR) as semantic graph representation. Our
+
+**Multi-hop QA** is one of the most challenging tasks that benefits from explainability as it mimics the human question answering setting, where multi- hop QA requires both the collection of information from large external knowledge resources and the aggregation of retrieved facts to answer complex natural language questions
+
+Textual corpora contain rich and diverse evidence facts, which are ideal knowledge resources for multi-hop QA
+
+To take advantages of both rich textual corpora
+and explicit graph structure and make it compatible to all textual knowledge, we explore the usefulness of **Abstract Meaning Representation** (AMR) as a graph annotation to a textual fact
+
+AMR (Banarescu et al., 2013) is a semantic formalism that represents the meaning of a sentence into a rooted, directed graph.
+
+Unlike other semantic role labeling that only considers the relations between predicates and their arguments (Song et al., 2019), the aim ofAMR is to **capture every meaningful con- tent in high-level abstraction** while removing away inflections and function words in a sentence
+
+AMR allows us to explore textual facts and simultaneously attributes them with explicit graph structure for explainable fact quality assessment and reasoning
+
+we propose a novel framework
+that incorporates AMR to make explainable knowl- edge retrieval and reasoning for multi-hop QA
+
+The introduced AMR serves as a bridge that enables an explicit reasoning process over a graph structure among questions, answers and relevant facts. As
+
+Unlike previous works on multi-hop QA that rely on existing KGs to find rela- tions among entities (Wang et al., 2020; Feng et al., 2020), our proposed AMR-SG is dynamically con- structed, which reveals intrinsic relations of facts and can naturally form any-hop connections
+
+De- spite the success of pretrained model in most Natu- ral Language Processing (NLP) tasks, it performs poorly in multi-hop QA, where some information is missing to answer questions
+
+#### Abductive commonsense reasoning - Bhagavatula et al. 2020
+
+**Abductive reasoning** is inference to the most plausible explanation.
+
+**Abductive reasoning** is inference to the most plausible explanation for incomplete observations
+
+**abduction** is “the only logical operation which introduces any new ideas”, which contrasts with other types of inference such as entailment, that focuses on inferring only such information that is already provided in the premise
+
+most previous work on abductive reasoning has focused on formal logic, which has proven to be too rigid to generalize to the full complexity of natural language.
+
+we investigate the use of natural language as the representation medium, and probe deep neural models on language-based abductive reasoning.
+, we propose Abductive Natural Language Inference (αNLI) and Abductive Natural Language Generation (αNLG) as two novel reasoning tasks in narrative contexts.
+
+#### Multi-hop Question Answering via Reasoning Chains - Chen et al. 2021
+
+**Multi-hop question answering** requires mod- els to gather information from different parts of a text to answer a question. Most
+
+Most cur- rent approaches learn to address this task in an end-to-end way with neural networks, with- out maintaining an explicit representation of the reasoning process. We
+
+We propose a method to extract a discrete reasoning chain over the text, which consists of a series of sentences leading to the answer. We
+
+We then feed the ex- tracted chains to a BERT-based QA model (Devlin et al., 2018) to do final answer predic- tion. Critically,
+
+, we do not rely on gold anno- tated chains or “supporting facts”: at training time, we derive pseudogold reasoning chains using heuristics based on named entity recog- nition and coreference resolution. Nor
+
+Nor do we rely on these annotations at test time, as our model learns to extract chains from raw text alone.
+
+modeling extraction sequentially is important, as is dealing with each candidate sentence in a context-aware way
+
+models may need inductive bias if they are to solve this problem “correctly.”
+
+we propose a step in this direction,
+with a two-stage model that identifies intermediate reasoning chains and then separately determines the answer. A
+
+A **reasoning chain** is a sequence of sentences that logically connect the question to a fact relevant (or partially relevant) to giving a rea- sonably supported answer. Figure
+
+Extracting chains gives us a discrete intermediate output of the reasoning process, which can help us gauge our model’s behavior beyond just final task ac- curacy. Formally,
+
+To find the right answer, we need to maintain uncertainty over this chain set, since the correct one may not immediately be evident, and for cer- tain types of questions, information across multi- ple chains may even be relevant. S
+
+We use a search procedure leveraging coreference and **named en- tity recognition** (NER) to find a path from the start sentence to an end sentence through a graph of re- lated sentences.
+
+We present
+a method for extracting oracle reasoning chains for multi-hop reasoning tasks. These chains general- ize across multiple datasets and are comparable to human-annotated chains.
+
+We present a model that learns from these chains at train time and at test time can produce a list of chains. Those chains could be used to gauge the behaviors of our model
+
+A **reasoning chain** is a sequence of sen- tences that logically connect the question to a fact relevant to determining the answer. Two
+
+Two adja- cent sentences in a reasoning chain should be intu- itively related: they should exhibit a shared entity
+
+
+
+#### Is Multi-Hop Reasoning Really Explainable? Towards Benchmarking Reasoning Interpretability - Lv et al. 2021
+
+Multi-hop reasoning has been widely studied in recent years to obtain more interpretable link prediction. However, we find in exper- iments that many paths given by these mod- els are actually unreasonable, while little work has been done on interpretability evaluation for them. In
+
+we propose a unified framework to quantitatively evaluate the inter- pretability of multi-hop reasoning models so as to advance their development.
+
+we define three metrics, including **path recall**, **local interpretability**, and **global interpretabil- ity** for evaluation, and design an approximate strategy to calculate these metrics using the in- terpretability scores of rules.
+
+**Multi-hop reasoning for knowledge graphs** (KGs) has been extensively studied in recent years. It not only infers new knowledge but also provides reasoning paths that can explain the prediction re- sults and make the model trustable.
+
+Most existing multi-hop reasoning models as-
+sume that the output paths are reasonable and put much attention on the performance of link predic- tion.
+
+In this paper, we propose a unified framework to automatically evaluate the interpretability of multi- hop reasoning models.
+
+Multi-hop reasoning models can give interpretable paths while performing triple completion. Most of the existing multi-hop reasoning models are based on the reinforcement learning (RL) framework
+
+Similar to multi-hop reasoning, **rule-based reason- ing** can also perform interpretable triple comple- tion, except that they give the corresponding rules instead of specific paths. Rule-based reasoning can be divided into two categories, namely, **neural- based models** and **rule mining models**. 

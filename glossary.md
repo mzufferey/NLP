@@ -22,3 +22,29 @@ long explanations is challenging due to **seman- tic drift** – i.e. the tenden
  **semantic drift** (Khashabi et al., 2019; Fried et al., 2015) – i.e. the tendency of composing spurious inference chains leading to wrong conclusions
 
 In general, an **explanation** can be seen as an answer to a how question formulated as follows: “How did the model arrive at the conclusion c starting from the problem formulation p?”
+
+**Abductive reasoning** is inference to the most plausible explanation for incomplete observations
+
+**abduction** is “the only logical operation which introduces any new ideas”, which contrasts with other types of inference such as entailment, that focuses on inferring only such information that is already provided in the premise
+
+A **reasoning chain** is a sequence of sentences that logically connect the question to a fact relevant (or partially relevant) to giving a rea- sonably supported answer.
+
+A **reasoning chain** is a sequence of sen- tences that logically connect the question to a fact relevant to determining the answer. Two adja- cent sentences in a reasoning chain should be intu- itively related: they should exhibit a shared entity or event, temporal structure, or some other kind of textual relation that would allow a human reader to connect the information they contain
+
+Similar to multi-hop reasoning, **rule-based reason- ing** can also perform interpretable triple comple- tion, except that they give the corresponding rules instead of specific paths. Rule-based reasoning can be divided into two categories, namely, **neural- based models** and **rule mining models**. 
+
+**combinatorial generalization**, that is, constructing new inferences, predictions, and behaviors from known building blocks
+
+**structure** as the product of composing a set of known building blocks
+
+“**Structured representations**” capture this composition (i.e., the arrangement of the elements) and
+
+“**structured computations**” operate over the elements and their composition as a whole
+
+**Relational reasoning**, then, involves manipulating structured representations of entities and relations, using rules for how they can be composed.
+
+**relational inductive bias**. While not a precise, formal definition, we use this term to refer generally to **inductive biases** (Box 2) which impose constraints on relationships and interactions among entities in a learning process
+
+**Locality** reflects that the arguments to the relational rule are those entities in close proximity with one another in the input signal’s coordinate space, isolated from distal entities.
+
+**Translation invariance** reflects reuse of the same rule across localities in the input.
