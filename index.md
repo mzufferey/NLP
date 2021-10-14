@@ -1,4 +1,4 @@
-## Single-cell omics
+## NLP
 
 ### Websites of particular interest
 
@@ -23,6 +23,10 @@
 
 
 
-
 ### Python packages
 
+SpaCy
+
+### Other tools
+
+prodigy
