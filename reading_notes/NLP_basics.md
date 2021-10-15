@@ -453,3 +453,136 @@ In this paper, we propose a unified framework to automatically evaluate the inte
 Multi-hop reasoning models can give interpretable paths while performing triple completion. Most of the existing multi-hop reasoning models are based on the reinforcement learning (RL) framework
 
 Similar to multi-hop reasoning, **rule-based reason- ing** can also perform interpretable triple comple- tion, except that they give the corresponding rules instead of specific paths. Rule-based reasoning can be divided into two categories, namely, **neural- based models** and **rule mining models**. 
+
+### Differentiable Convex Optimization for Explainable Multi-hop Natural Language Inference - Mohan
+
+providing supporting evi- dence for Natural Language Inference
+
+cast the problem as the construction of a **graph of natural lan- guage statements** that connects the premise to the hypothe- sis:
+
+this graph is intended to serve as an **explanation for a valid inference**. In
+
+**combinatorial optimization techniques** such as Integer Linear Programming (ILP) have been explored as a way to **encode explicit and controllable as- sumptions about the target graph**. 
+
+such solvers provide a solution to the subgraph selection problem, they are often **limited by the use of explicit, predefined constraints** and **can- not be integrated as part of broader deep neural architectures**
+
+In contrast, state-of-the-art **transformers** can learn from natu- ral language data and **implicitly encode complex constraints** for the inference. However, these models are intrinsically black boxes.
+
+a novel framework named **∂- Explainer** (**Differentiable Explainer**) that aims at combining the best of both worlds: ∂-Explainer **integrates constrained optimization as part of a deep neural network via differen- tiable convex optimization**, allowing the fine-tuning of pre- trained transformers for downstream explainable NLP tasks.
+
+we transform the constraints presented by TupleILP and integrate them with Transformer-based sentence embeddings for the task of explainable Science QA
+
+**Constrained optimization solvers based on Integer Linear Programming** (ILP) have been proposed **as a method to ad- dress complex and knowledge-intensive natural language inference (NLI) tasks**
+
+pro- vides a viable mechanism to **encode explicit and control- lable assumptions**, 
+
+casting **multi-hop natural language inference  as an optimal subgraph selection problem.**
+
+While delivering **explainability**, existing optimization solvers **cannot be integrated as part of a deep neural network** and are often **limited by the exclusive adoption of the constraints for inference**. 
+
+prevents these methods from being optimized end-to-end on annotated cor- pora and
+
+achieving performance and robustness comparable with deep learning counterparts
+
+State-of-the-art models for natural language inference, in particular, are almost exclu- sively represented by **Transformers-based language models**, thanks to their **ability to transfer lin- guistic and semantic information to downstream tasks**
+
+Transformers are typically regarded as **black-**
+**box models**, posing concerns about the interpretability and transparency of their predictions
+
+this paper proposes ∂-Explainer, **the first hybrid framework for multi-hop natu- ral language inference that combines constraint satisfaction layers with pre-trained neural representations**, enabling **end- to-end differentiability for optimization-based solvers**
+
+**certain convex optimiza-**
+**tion problems can be represented as individual layers** in larger end-to-end differentiable networks
+
+these layers **can be adapted to encode constraints and dependen- cies between hidden states** that are hard to capture via stan- dard neural networks.
+
+**convex optimization layers can be successfully integrated with Transformers** to achieve explainability and robustness in complex natural language inference problems.
+
+we **transform the constraints into differentiable convex op- timization layers** and subsequently **integrate them with pre- trained sentence embeddings from Transformers** 
+
+the performance of non-differentiable solvers can be improved by up to ≈ 10% when fine-tuned end-to-end while **still providing structured explanations in support of their inference**. In
+
+A novel **differentiable framework** that **incorporates con- straints via convex optimization layers** into broader transformers-based architectures
+
+the proposed framework **allows end-to-end differentiability on downstream tasks** for both explanation and answer selection, leading to a substantial improvement when compared to non- differentiable constraint-based solvers.
+
+∂-Explainer is **more robust to distrac- tors when compared to Transformer-based models aug- mented with the same external evidence without the op- timization layer**
+
+**ILP** has been employed to **model structural and semantic constraints to perform multi- hop natural language inference**. T
+
+in line with previous works that have attempted to incor- porate optimization as a neural network layer.
+
+we use the **differentiable convex optimization layers** pro- posed by Agrawal et al. (2019a). These layers provide a way to abstract away from the conic form, **letting users define convex optimization in natural syntax.**
+
+The problem of **Multi-Hop Natural Language inference** can be stated as follows: Given a hypothesis h (each natural language sentences), we say that **we may infer h if there exists a subset of supporting facts in a knowledge base** {f1, f2, . . .} ⊆ F of true statements **which would allow a human being to deduce h from {f1, f2, . . .}**. We call this set of facts an **explanation** for h
+
+we model
+this as a **graph problem**: suppose that the **facts** in the knowl- edge base F **and the hypothesis h are the node**s of a prede- fined weighted graph G. We then wish to **find a connected subgraph of G that contains h, and is maximal with re- spect to the summed edge weights.**
+
+**allows for the use of combinatorial optimization strate- gies** such as Integer Linear Programming (ILP),
+
+the real challenge of ensuring that this produces convincing expla- nations lies in **assigning the edge weights** of the graph G (ideally **capturing a quantification of explanatory relevance**) and defining the **constraints** for the optimization problem
+
+The novelty of our approach lies in the departure from the manually predefined edge weights of previous works (Khot, Sabharwal, and Clark 2017) to **weights that can be learnt dynamically from end-to-end multi-hop natural language in- ference examples**
+
+Our approach proceeds in two strokes: 
+
+1. incorporating an appropriate **dataset**, 
+   * we **adapt a multi-hop question answering dataset into a multi-hop natural language inference dataset** by converting an example’s question (q) and the set of candidate answers C = {c1, c2, c3, . . . , cn} into hypotheses H = {h1, h2, h3, . . . , hn}
+   * initialization of the knowledge graph, given the hypothe- ses H we adopt a retrieval model to select a list of candidate explanatory facts F = {f1, f2, f3, . . . , fk} to construct a weighted complete bipartite graph G = (H, F, E, W), where the weights Wik of each edge Eik denote how rele- vant a fact fk is with respect to the hypothesis hi.
+2. designing an **end-to-end differen- tiable architecture** which simultaneously **solves the opti- mization problem and dynamically adjusts the graph edge weights** for better performance. 
+   * departing from the standard ILP approaches, we
+     adopt **differentiable convex optimization for the optimal sub- graph selection problem.**
+   * we approximate and make differentiable the constraints presented in TupleILP 
+     * TupleILP constructs a **semi-structured knowl- edge base using tuples** extracted via Open Information Ex- traction. 
+     * It employs an **ILP model to perform inference over the extracted tuples** **taking into account the Subject- Predicate-Object structure** of the facts in the knowledge base. 
+     * current state-of-the-art when considering the class of structured and integer linear pro- gramming solvers,
+     * , the constraints of TupleILP are relatively easier to reproduce, providing more control to validate the contribution deriving
+
+In previous work, the construction of the graph G re- quires **predetermined edge-weights** based on lexical over- laps or semantic similar- ity using sentence embeddings, on top of which combinatorial optimization strategies are performed separately.
+
+we posit tha**t learning the graph weights dynamically as part of an end-to- end explainable natural language inference system** trained on examples that provide a gold-standard explanations for the correct answer will lead to more accurate and robust per- formance. To
+
+To this end, the **optimization strategy should be differentiable and efficient**
+
+TupleILP and similar Integer Linear Program- ming approaches present 2 key shortcomings that prevent achieving this goal: 
+
+1. ILP formulation **inher- ently non-differentiable** as it results in a non-convex opti- mization problem -> cannot be integrated with deep neural networks and trained end-to-end
+2. Integer Programming is known to be **NP-complete**; , as the size of the optimization problem in- creases, finding exact solutions becomes computation- ally intractable.; strong limitation for multi-hop natural language inference in general
+
+we propose an **adaptation of the subgraph selection problem** so that the **edge-weighted representation of the graph G may also be optimized** during the training of the end-to-end reason- ing task.
+
+we turn to **Semi-definite program- ming** (SDP) which is often used as a **convex approxima- tion of traditional NP-hard combinatorial graph optimiza- tion problems**, such
+
+we lever- age the semi-definite relaxation of the following NP-hard subgraph selection problem
+
+the semi-definite pro- gram relaxation can be solved by adopting the interior-point method (De
+
+the first to employ SDP to solve a natural language processing task.
+
+To demonstrate the impact of integrating a convex optimiza- tion layer into a broader end-to-end neural architecture, **∂- Explainer employs a Transformer-based sentence embed- ding model.**
+
+**we incorporate a dif- ferentiable convex optimization layer with Sentence-BERT**
+
+**SBERT** is adopted **to estimate the relevance between hypothesis and facts** during the construction of the base graph
+
+SBERT as a bi-encoder architecture to minimize the computational overload and operate on large sentence graphs.
+
+The **semantic relevance score from SBERT is com- plemented with a lexical relevance score** computed consid- ering the shared terms between hypotheses and facts. We
+
+to adopt **differentiable convex optimization layers**, the constraints **should be defined following the Disciplined Parameterized Programming (DPP) formalism** (Agrawal et al. 2019a), providing a set of conventions when construct- ing convex optimization problems
+
+* DPP consists of **func- tions (or atoms) with a known curvature** (affine, convex or concave) and **per-argument monotonicities.** 
+* also consists of **Parameters which are symbolic constants** with an unknown numerical value assigned during the solver run. 
+
+In addition to the aforementioned constraints and semidefinite constraints specified in Equation 3, we adopt part of the **constraints from TupleILP** (
+
+The output from the DCX layer returns **the solved edge ad- jacency matrix** ˆE with values between 0 and 1.
+
+We interpret the **diagonal values of**
+**Eˆ be the probability of the specific**
+**node to be part of the selected subgraph.** The
+
+The final step is to optimize the sum of the **cross-entropy loss** lc **between the se- lected answer and correct answer** hans, as well as the **binary cross entropy loss** lb **between the selected explanatory facts and true explanatory facts** Fexp
+
+open new lines of research on the integration of neural networks and constrained optimization, leading to more controllable, transparent and explainable NLP models.

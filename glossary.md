@@ -48,3 +48,6 @@ Similar to multi-hop reasoning, **rule-based reason- ing** can also perform inte
 **Locality** reflects that the arguments to the relational rule are those entities in close proximity with one another in the input signal’s coordinate space, isolated from distal entities.
 
 **Translation invariance** reflects reuse of the same rule across localities in the input.
+
+The problem of **Multi-Hop Natural Language inference** can be stated as follows: Given a hypothesis h (each natural language sentences), we say that **we may infer h if there exists a subset of supporting facts in a knowledge base** {f1, f2, . . .} ⊆ F of true statements **which would allow a human being to deduce h from {f1, f2, . . .}**. We call this set of facts an **explanation** for h
+
