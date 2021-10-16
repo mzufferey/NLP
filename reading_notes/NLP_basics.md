@@ -586,3 +586,198 @@ We interpret the **diagonal values of**
 The final step is to optimize the sum of the **cross-entropy loss** lc **between the se- lected answer and correct answer** hans, as well as the **binary cross entropy loss** lb **between the selected explanatory facts and true explanatory facts** Fexp
 
 open new lines of research on the integration of neural networks and constrained optimization, leading to more controllable, transparent and explainable NLP models.
+
+
+
+### GLOSSARY FOR Differentiable Convex Optimization for Explainable Multi-hop Natural Language Inference - Mohan
+
+differentiable optimization problems = problems whose solutions can be backpropagated through
+
+ng, combinatorial optimization techniques such as Integer Linear Programming (ILP)
+
+differen- tiable convex optimization
+
+optimal subgraph selection problem
+
+incorporates con- straints via convex optimization layers
+
+robust to distrac- tors
+
+Constraint-Based NLI Solvers:
+
+building semi-structured representations using Open Infor- mation Extraction
+
+These layers provide a way to abstract away from the conic form, letting users define convex optimization in natural syntax
+
+knowledge graph
+
+retrieval model
+
+a semi-structured knowl- edge base using tuples extracted via Open Information Ex- traction. It
+
+subgraph selection problem	
+
+we turn to Semi-definite program- ming (SDP) which is often used as a convex approxima- tion of traditional NP-hard combinatorial graph optimiza- tion problems,
+
+positive semidefinite matrices satisfying
+
+The optimal solution matrix
+Eˆ is selected from the cone
+of positive semi-definite matrices
+
+the semi-definite pro- gram relaxation can be solved by adopting the interior-point method
+
+h Sentence-BERT (SBERT)
+
+to adopt differentiable convex optimization layers, the constraints should be defined following the Disciplined Parameterized Programming (DPP) formalism (Agrawal et al. 2019a), providing a set of conventions when construct- ing convex optimization problems. DPP consists of func- tions (or atoms) with a known curvature (affine, convex or concave) and per-argument monotonicities. In addition to these, DPP also consists of Parameters which are symbolic constants with an unknown numerical value assigned during the solver run. W
+
+SPO tuples
+
+Open Information Extraction model (Stanovsky
+
+DCX layer returns
+
+### Differentiable Convex Optimization Layers - Agrawal et al. 2019
+
+embed differentiable optimization problems (that is, problems whose solutions can be backpropagated through) as layers within deep learning architectures.
+
+provides a useful inductive bias for certain problems, but
+
+we propose an **approach to differ- entiating through disciplined convex programs**, a subclass of convex optimization problems used by domain-specific languages (DSLs) for convex optimization
+
+we introduce **disciplined parametrized programming**, a subset of disciplined convex programming
+
+every disciplined parametrized program can be represented as the composition of 
+
+* a solver = an affine map from parameters to problem data
+* an affine map from the solver’s solution to a solution of the original problem
+
+ (a new form we refer to as affine-solver-affine form).
+
+efficiently differentiate through each of these components, allowing for end-to-end analytical differentiation through the entire convex program. We
+
+convex optimization problems = functions mapping problem data to solutions
+
+convex optimization layers can provide useful inductive bias in end-to-end models, their adoption has been slowed by how difficult they are to use. 
+
+Existing layers (e.g., [6, 1]) require users to transform their problems into rigid canonical forms by hand
+
+. **Domain-specific languages** (DSLs) for convex optimization 
+
+* abstract away the process of converting problems to canonical forms, 
+* letting users specify problems in a natural syntax;
+* programs are then lowered to canonical forms and supplied to numerical solvers behind-the-scenes
+
+* enable rapid prototyping and make convex optimization accessible to scientists and engineers not experts in optimization.
+
+this paper: **do what DSLs have done for convex optimization, but for differentiable convex optimization layers**
+
+ we show how to efficiently differentiate through **disciplined convex programs** = large class of convex optimization problems that can be parsed and solved by most DSLs for convex optimization
+
+we introduce **disciplined parametrized programming** (DPP), **a grammar for producing parametrized disciplined convex programs**. 
+
+Given **a program produced by DPP**, we show how to **obtain an affine map from parameters to problem data**, and **an affine map from a solution of the canonicalized problem to a solution of the original problem**. 
+
+this representation of a problem = **affine-solver-affine (ASA) form** = the composition of an affine map from parameters to problem data, a solver, and an affine map to retrieve a solution 
+
+
+We introduce 
+
+* **DPP = a new grammar for parametrized convex optimization problems**
+* **ASA form = ensures that the mapping from problem parameters to problem data is affin**
+
+
+
+**DSLs for convex optimization** 
+
+* allow users to specify convex optimization problems in a natural way that follows the math
+* at the foundation: ruleset from convex analysis known as **disciplined convex programming**
+  * **disciplined convex program** = a mathematical program written using DCP 
+    * all such programs are **convex**. 
+    * can be **canonicalized to cone programs** by expanding each nonlinear function into its graph implementation 
+  *  **DPP can be seen as a subset of DCP** that mildly restricts the way parameters (symbolic constants) can be used
+
+
+
+**Differentiation of optimization problems** 
+
+* convex optimization problems do not in general admit closed-form solutions
+* nonetheless possible to **differentiate through convex optimization problems by implicitly differentiating their optimality conditions** (when certain regularity conditions are satisfied)
+
+* methods were developed to **differentiate through convex cone programs** 
+  * general methods since **every convex program can be cast as a cone program**
+
+The software released requires users to express their problems in conic form. Expressing a convex optimization problem in conic form requires a working knowledge of convex analysis. 
+
+**our work abstracts away conic form, letting the user differentiate through high-level descriptions of convex optimization problems**; we canonicalize these descriptions to cone programs on the user’s behalf. This makes it possible to rapidly experiment with new families of differentiable programs, induced by different kinds of convex optimization problems.
+
+Because **we differentiate through a cone program by implicitly differentiating its solution map**, our method can be paired with any algorithm for solving convex cone programs
+
+A parametrized **convex optimization problem** can be viewed as a (possibly multi-valued) function that maps a parameter to solutions.
+
+**Disciplined convex programming**
+
+*  is **a grammar for constructing convex optimization prob- lems** 
+* consists of 
+  * **functions**, or atoms, 
+    * atom = a function with known curvature (affine, convex, or concave) and per-argument monotonicities
+  * and a single rule for composing them.
+
+* Every disciplined convex program is a convex optimization problem, but the converse is not true
+  * not a limitation in practice, because atom libraries are extensible (i.e., the class corresponding to DCP is parametrized by which atoms are implemented). 
+
+**Cone programs.**
+
+*  A (convex) cone program is an optimization problem 
+* Our method for differentiating through disciplined convex programs requires calling a **solver** (an algorithm for solving an optimization problem) in the forward pass. We
+
+* focus on the special case in which the solver is a **conic solver**. 
+  * A conic solver targets convex cone programs,
+
+### Answering Complex Questions Using Open Information Extraction Tushar - Khot et al. 2017
+
+Open Information Extraction (Open IE) provides a way to generate semi-structured knowledge for QA, but to date such knowledge has only been used to answer simple questions with retrieval- based methods.
+
+presenting **a method for reasoning with Open IE knowledge,** allowing more complex questions to be handled.
+
+Using a recently proposed **support graph optimiza- tion** framework for QA, we develop **a new inference model for Open IE**, in particu- lar one that can work effectively with mul- tiple short facts, noise, and the relational structure of tuples. Our
+
+r, these KBs are expensive to build and typically domain-specific
+
+Automatically con- structed open vocabulary (subject; predicate; ob- ject) style tuples have broader coverage, but have only been used for simple questions where a single tuple suffices (Fader
+
+develop a **QA system that can perform reasoning with Open IE tuples** for complex multiple-choice questions that **require tuples from multiple sen- tences**
+
+* Such a system can answer complex ques- tions in resource-poor domains where curated knowledge is unavailable.
+  * Elementary-level sci- ence exams is one such domain, requiring com- plex reasoning (Clark,
+    * lack of a large-scale structured KB -> either rely on shallow reasoning with large text corpora or deeper, structured reasoning with a small amount of automatically acquired or manually curated knowledge
+
+Which object in our solar system reflects
+light and is a satellite that orbits around one planet? (A) Earth (B) Mercury (C) the Sun (D) the Moon
+
+-> A natural way to answer it is by combining facts such as (Moon; is; in the solar system), (Moon; reflects; light), (Moon; is; satellite), and (Moon; orbits; around one planet).
+
+ex for such reasoning: TableILP
+
+TABLEILP 
+
+* treats **QA as a search for an optimal subgraph** that **connects terms in the question and answer via rows in a set of curated tables**
+* solves the optimization problem using **Integer Linear Programming** (ILP)
+
+We similarly want to **search for an optimal subgraph** but **large, automatically extracted tuple KB** makes the reasoning context different on three fronts
+
+* unlike reasoning with tables, **chaining tuples is less important and reliable** as join rules aren’t available; 
+* **conjunctive evidence becomes paramount**, as, unlike a long table row, **a single tuple is less likely to cover the entire question**; and
+* unlike table rows, **tuples are noisy**, making **combining redundant evidence essen- tial**. 
+
+-> table-knowledge centered inference model isn’t the best fit for noisy tuples
+
+**a new ILP-based model of inference with tuples**, im- plemented in a reasoner called **TUPLEINF**. 
+
+demonstrates for the first time how **Open IE based QA can be extended from simple lookup questions to an effective system for complex questions**
+
+The work most related to TUPLEINF is the aforementioned **TABLEILP** solver. 
+
+* focuses on **building inference chains using manually ually defined join rules for a small set of curated tables**.
+* can also use open vocabulary tu- ples but efficacy limited by the **difficulty of defining reliable join rules for such tuples**. 
+* **each row in some complex curated tables covers all relevant contex- tual information** (e.g., each row of the adaptation table contains (animal, adaptation, challenge, ex- planation)), whereas **recovering such information requires combining multiple Open IE tuples**
