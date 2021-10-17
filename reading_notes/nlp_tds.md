@@ -2247,3 +2247,759 @@ The details of the masking procedure for each sentence are the following:
 In 80% of the cases, the masked tokens are replaced by [MASK].
 In 10% of the cases, the masked tokens are replaced by a random token (different) from the one they replace.
 In the 10% remaining cases, the masked tokens are left as is.
+
+
+
+### [Utilisez les réseaux neuronaux de transformateurs](https://www.wolfram.com/language/12/neural-network-framework/use-transformer-neural-nets.html.fr?product=language)
+
+[AttentionLayer](http://reference.wolfram.com/language/ref/AttentionLayer.html) peut exploiter les dépendances à long terme au sein des séquences d'une manière beaucoup plus directe que les couches récurrentes telles que [LongShortTermMemoryLayer](http://reference.wolfram.com/language/ref/LongShortTermMemoryLayer.html) et [GatedRecurrentLayer](http://reference.wolfram.com/language/ref/GatedRecurrentLayer.html).
+
+**GTP** a une architecture similaire à celle de BERT. Sa principale différence réside dans le fait qu'il utilise une **architecture d'auto-attention causale**, au lieu d'une architecture d'auto-attention simple.
+
+**L'attention causale est moins efficace dans le traitement de texte  car un token particulier ne peut pas obtenir d'informations sur de  futurs tokens.** 
+
+D'autre part, **une attention causale est nécessaire pour la génération de texte** : **GPT est capable de générer des phrases, alors que BERT ne peut que les traiter.** 
+
+
+
+### [Apprentissage par transfert pour l’extraction de relations pharmacogénomiques à partir de textes](https://hal.inria.fr/hal-02939161/document)
+
+
+
+ BERT atteint ce haut
+niveau de performance grâce à l’utilisation des différentes techniques de pointe dans le
+domaine de l’apprentissage profond combinées avec une architecture de transformateur
+originale (le premier transformateur qui capture le contexte bidirectionnel) sans oublier le
+mécanisme d’attention et l’apprentissage par transfert qui constituent les piliers du succès
+de BERT. 
+
+. Avant les transformateurs, les réseaux de neurones récur-
+rents (RNN) et les réseaux de neurones convolutionnels (CNN) étaient les architectures
+d’apprentissage profond les plus utilisées
+
+##### RNN
+
+peuvent traiter l’information contextuelle à travers
+des liens de récurrence et peuvent par cette méthode mémoriser l’information dans les sé-
+quence
+
+. LSTM (Long short-term memory) et GRU (Gated recurrent unit) sont les types
+de RNN les plus standards grâce à leur gestion du flux par des portes, procédé qui per-
+met aux LSTM et GRU de pallier le problème de la disparition du gradient (vanishing
+gradient) et d’augmenter ainsi la longueur des séquences mémorisée
+
+. Les RNN ont la
+capacité de capturer le contexte, 
+
+: les blocs LSTM peuvent être utilisés séquentiellement
+sous forme d’une chaîne ou sous forme d’un arbre de LSTM[36]qui forme un réseau
+
+. Les arbres LSTM peuvent notamment
+servir à apprendre des structures sous forme d’arbre comme par exemple les graphes de
+dépendances qui sont des arbres binaires qui représente la structure lexicale d’une phrase
+
+Pour
+obtenir l’arbre de dépendance on a souvent besoin d’un parseur qui définit les liens de
+dépendance entre les mots dans la phrase
+
+. La structure des LSTM correspond à cet arbre
+
+une architecture parallèle composée d’une LSTM séquentielle
+et d’un arbre LSTM qui sert à capturer les caractéristiques structurelles ; la partie LSTM
+séquentielle est suivie par l’attention et fournit une information sur la pertinence entre
+les mots à la deuxième partie (l’arbre LSTM). 
+
+##### CNN
+
+Le traitement automatique des langues les a adoptées en raison de leur grande capacité
+d’extraction des caractéristiques locales à l’aide des filtres de convolution
+
+ L’extraction
+des caractéristiques s’opère hiérarchiquement, partant des caractéristiques très locales et
+très simples, apprises dans les premières couches et allant jusqu’à des **caractéristiques**
+**compliquées apprises dans les couches profondes**
+
+avantage de
+posséder un nombre réduit de paramètres grâce au partage des paramètres (les filtres
+de convolution)
+
+une architec-
+ture mixte qui utilise en parallèle CNN et RNN, la partie RNN permet d’extraire des
+vecteurs de représentation en exploitant l’information contextuelle à travers un BiLSTM
+combiné avec les caractéristiques locales extraites par un CNN, un plongement de posi-
+tion relative fournit une information structurelle au modèle et le mécanisme d’attention
+(2.1) a été également utilisé avec un LSTM pour mieux capturer le contexte
+
+##### Mécanisme d’attention
+
+capacité de focalisation sur l’information pertinent
+
+<u>Séquence à séquence</u>
+
+introduit pour la 1ère fois avec RNN pour architecture séquence à séquence
+
+ LSTM et GRU sont plus adaptés aux longues phrases que le RNN simple, mais le
+problème des longues phrases demeure.
+
+ **architecture séquence à séquence** = une
+architecture composée d’une partie encodeur et d’une partie décodeur.
+
+*  **L’encodeur** prend
+  une séquence en entrée et génère un **vecteur contextuel** en sortie (le dernier vecteur d’état).
+* Ce vecteur résume en quelque sorte la séquence en entrée, puis il deviendra l’entrée du
+  **décodeur** qui va générer la séquence en sortie au long des itérations 
+*  dans chaque itération
+  le décodeur utilise le vecteur de contexte et le vecteur de l’état précédent pour générer la
+  sortie, associée à l’itération en question. 
+
+**séquence à séquence avec l’atten-**
+**tion,** le mécanisme d’attention est appliqué dans la phase de décodage, 
+
+* une fonction
+  de similarité (souvent un produit scalaire) appliquée entre les vecteurs de contexte et les vecteurs d’état de la phase d’enco-
+  dage
+* fournit des scores de similarité associés aux vecteurs
+  d’état d’encodeur. 
+* scores normalisés par une fonction softmax afin d’obtenir
+  un **vecteur d’attention**
+  * constitue avec le vecteur de contexte les entrées du
+    décodeur
+  * calculé à chaque itération de décodage afin d’obtenir
+    le vecteur de contexte accordé à cette itération. 
+
+À chaque itération le mécanisme d’atten-
+tion permet donc d’avoir un **vecteur de contexte qui représente un résumé sélectif de la**
+**séquence d’entrée**. 
+
+**Plus un vecteur d’état est similaire au vecteur de contexte associé à**
+**cette itération, plus il contribue au vecteur en sortie du décodeur**
+
+<u>L’auto-attention à plusieurs têtes</u>
+
+est un moyen de calculer la pertinence d’un ensemble
+de valeurs en fonction de certaines clés et requêtes selon plusieurs têtes
+
+Le mécanisme d’attention permet au modèle de se concentrer sur des informations
+pertinentes en fonction de ce qu’il traite actuellement
+
+ cette focalisation peut porter sur
+plusieurs caractéristiques différentes -> nécessite de calculer l’attention selon plu-
+sieurs têtes parallèles
+
+ **Chaque tête réalise une focalisation différente**, ce qui permet au
+transformateur de calculer diverses représentations à travers différentes transformations
+linéaires, et donc de capturer plusieurs aspects sur les entrées
+
+*Les vecteurs d’attention*
+
+1ère étape de l’attention multi-têtes: calculer 3 transforma-
+tions sur chaque vecteur de représentation en entrée
+
+transformations linéaires calculées à partir des **multiplications de vecteurs de représentation avec trois matrices**,
+ces matrices étant des poids appris dans la phase d’entraînement comme les autres poids
+dans le réseau
+
+matrices depoids associées respectivement aux requêtes, clés, valeurs.
+
+*Attention selon une tête*
+
+produit scalaire reflète le degré d’alignement des deux vecteurs, plus le produit sca-
+laire entre deux vecteurs est grand plus les vecteurs sont alignés et donc similaires
+
+ **le produit scalaire est utilisé comme une fonction de similarité qui sert à calculer les scores de similarité entre les vecteurs requêtes et clé**
+
+La dimension des vecteurs utilisés impacte la plage des valeurs, une **mise à l'échelle**
+est donc appliquée sur le produit scalaire en divisant ce produit par la racine de la di-
+mension
+
+ la distribution des
+scores est normalisée par une fonction **softmax**
+
+ Le résultat de
+cette normalisation est le **vecteur d’attention**, ce vecteur sera par la suite multiplié par le
+vecteur des valeurs pour générer le vecteur de représentation
+
+Ces **opérations d’attention permettent aux différents sous-mots de contribuer**
+**à la représentation de chaque sous-mot selon la similitude entre le sous-mot en question et**
+**les autres sous-mots** 
+
+(l’**attention** est calculée **entre la clé** de chaque sous-mot **et la requête**
+du sous-mot dont on est en train de générer la représentation). 
+
+Soit deux sous-mots A et
+B. Plus le sous-mot A est similaire à un sous-mot B, plus il contribue à la représentation
+de B, ce qui **permet au transformateur de capturer des relations de longueur arbitraire**
+**entre les mots** dans la phrase contrairement au RNN.
+
+*L’attention multi têtes*
+
+Pour **apprendre diverses représentations**, l’attention multi-têtes applique des trans-
+formations linéaires aux vecteurs, clés et requêtes pour chaque tête d’attention.
+
+Une fois que les vecteurs de représentation sont calculés selon
+les différentes têtes, ces vecteurs seront **concaténés** pour construire un vecteur de représen-
+tation. 
+
+Une transformation linéaire est appliquée sur ce dernier pour **réduire sa dimension**,
+comme le montrent l’équation
+
+ Les
+têtes étant indépendantes, le calcul peut être réalisé **en parallèle**.
+
+##### Apprentissage par transfert
+
+ l’apprentissage par transfert supervisé se divise
+en deux grandes catégories : 
+
+1. le **transfert inductif** = transférer l’information entre des tâches différentes mais dans le même domaine
+2.  le **transfert transductif**. = transférer de l’information entre des tâches similaires alors que les domaines correspon-
+   dants sont différents (différentes probabilités marginales);
+
+##### Stratégies d’apprentissage par transfert
+
+<u>Fine tuning</u>
+
+* récupérer un modèle pré-entraîné ou une partie d’un modèle
+  pré-entraîné et 
+*  l’utiliser comme un modèle initial en ajoutant un nombre réduit de
+  paramètres (couches) et en reprenant l’apprentissage.
+*  Le modèle source (pré-entraîné)
+  aide ainsi le modèle cible à ajuster les poids en fournissant une bonne initialisation des
+  poids.
+
+* généralement les modèles pré-entraînés sont entraînés sur plusieurs tâches et sur
+  une grande quantité de données, le modèle transféré a donc déjà une bonne capacité de
+  représentation et ne nécessite que peu de données dans le domaine cible et moins de temps
+  d’apprentissage pour adapter le modèle pré-entraîné à la tâche cible. 
+* largement utilisée avec les transformateurs (BERT par exemple).
+
+<u>Frozen</u>
+
+* Les modèles d’apprentissage profond sont des architectures en couches qui apprennent
+  différentes caractéristiques à différents niveaux (représentations hiérarchiques de caracté-
+  ristiques en couches).
+*  Ces couches sont connectées à une dernière couche (généralement
+  une couche entièrement connectée dans le cas de l’apprentissage supervisé) pour obtenir
+  la sortie finale. 
+* utiliser un réseau pré-entraîné
+  (tel que BERT) comme un extracteur des caractéristiques si l’on enlève la dernière couche.
+* Après l’extraction des caractéristiques on peut utiliser n’importe quel classifieur (SVM
+  par exemple) pour classifier les objets d’intérêt sur la base des caractéristiques fournirent
+  par le modèle pré-entrainé. 
+* Une méthode similaire permet de faire un apprentissage en
+  utilisant la stratégie qui consiste à arrêter l’apprentissage sur certains poids ou couches au
+  bout d’un moment, autrement dit à figer une partie du réseau tandis que le reste continue
+  l’apprentissage, ainsi la rétro-propagation du gradient s’applique uniquement sur la partie
+  non gelée du réseau.
+*  On peut considérer la partie figée comme un extracteur des caracté-
+  ristiques et la partie non figée comme un classifieur initialisé à l’aide du pré-entraînement
+  appliqué préalablement.
+* frozen = Un réseau dont une partie est figée 
+* temps d'exécution: frozen plus avantageuse
+  par rapport au fine-tuning car le nombre des poids à ajuster dans le frozen est bien
+  moins élevé (temps d’une seule inférence sur les poids figés bien moindre que le temps nécessaire pour entraîner ces poids)
+
+<u>Distillation</u>
+
+* utilisée essentiellement pour la compression des modèles
+* transfert des connaissances acquises par un
+  grand modèle vers un petit modèle.
+*  Le grand modèle (enseignant) doit en quelque sorte
+  enseigner le petit modèle (élève) sans perte de validité
+* . Même si les deux modèles sont
+  entraînés sur les mêmes données, le petit modèle est incapable d’apprendre une représen-
+  tation concise des connaissances.
+*  Cependant certaines informations sur une représentation
+  concise des connaissances sont codées dans les pseudo-vraisemblances affectées à la sortie
+  du modèle. 
+* Les pseudo vraisemblances (ou **soft-label** en anglais) peut être vu comme le
+  processus suivant : 
+  * après qu’un modèle prédit correctement une classe, il attribue une
+    valeur élevée à la variable de sortie correspondant à cette classe et des valeurs plus petites
+    aux autres variables de sortie.
+  *  La distribution des valeurs dans le vecteur des pseudo-
+    vraisemblances en sortie de modèle (enseignant) fournit des informations sur la façon
+    dont ce grand modèle représente les connaissances. 
+  * Par conséquent, l’objectif de facili-
+    ter l’apprentissage du petit modèle (élève) peut être atteint en entraînant uniquement le
+    grand modèle sur les données où les étiquettes sont représentées par un vecteur «one-hot
+    encoding» (hard-label) c’est-à-dire en exploitant sa meilleure capacité à apprendre des
+    représentations de connaissances concises, puis en distillant ces connaissances dans un
+    modèle plus petit, qui sera donc en mesure d’apprendre sur les pseudo-vraisemblances du
+    grand modèle (soft-label)
+
+
+
+##### Représentation des entrées
+
+Le texte doit donc être représenté par
+des vecteurs réels avant d’être traité par le transformateur.
+
+opération réalisée via un plongement contextuel (**contextual embedding**)
+
+Le **plongement lexical** classique (word2vec, GloVe) est en général basé sur la
+co-occurrence statistique des mots qui sont projetés **indépendamment de leur contexte**.
+
+* les relations sémantiques dans la phrase ne contribuent pas au plongement.
+
+le **plongement contextuel** projette les mots **selon leur contexte** dans la phrase
+et fournit en plus une représentation logique à l’échelle de la phrase
+
+BERT: plongement en plusieurs étapes
+
+1. prétraitement des textes en insérant des **symboles spéciaux** dans le texte brut, pour indiquer au transformateur certaines informations sur les mots et sur la compo-
+   sition du texte en entrée.
+
+2. les mots sont décomposés en sous-mots (**token**) présents
+   dans le vocabulaire et ces derniers seront représentés par leur identifiant dans le vocabu-
+   laire
+3.  Puis chaque token passera dans la couche du plongement lexical pour obtenir son
+   **vecteur de représentation** (**token embedding**).
+
+BERT possède en plus 2 autres types de plongement : 
+
+1. plongement de position (**position embedding**) = porte l’information structurelle de la phrase 
+2. plongement de segmentation (**segmentation embedding**) = porte l’information de positionnement des phrases dans l’entrée
+
+ La représentation finale de chaque sous-mot en
+entrée est la **somme des trois vecteurs de représentation** qui lui sont associés
+
+
+
+##### Prétraitement
+
+Des informations sont indiquées au transformateur par le biais des **sous-mots spéciaux**
+insérés dans le texte. Les principaux :
+
+* [CLS] : indique le début de la phrase
+* [SEP] : indique la séparation entre les phrases ou la fin de la phrase.
+* [PAD] : utilisé pour compléter les dimensions vides d’un vecteur dont la dimension
+  est inférieur à celle du plongement (padding).
+* [MASK] : utilisé pour masquer des mots et pour indiquer au transformateur les
+  mots à prédire dans la tâche de prédiction des mots masqués.
+
+stratégies d’indication des entités nommées au transformateur :
+
+* **L’encapsulation** : les entités nommées sont entourées par des symboles spéciaux pour
+  indiquer le début et la fin de chaque entité
+  * avantage de bien représenter les entités imbriquées ou celles qui se chevauchent. 
+  * le modèle peut apprendre non seulement le contexte de la phrase mais aussi le contexte dans les
+    sous-phrases qui forment les entités.
+  * très utile dans les approches qui prennent en considération les entités
+    nommées en sortie
+* l'**anonymysation**: remplacer les entités nommées par des
+  sous-mots spéciaux
+  * permet
+    au modèle d’identifier les sous-mots qui appartiennent aux entités nommées sans connaître
+    les entités nommées, 
+  * assurent que le modèle a utilisé uniquement le
+    contexte dans sa décision, ce qui permet d’éviter l’apprentissage des co-occurrences qui
+    pourrait être une forme de sur-apprentissage.
+
+##### Tokénisation
+
+processus de partition des mots en sous-mots qui appartiennent au vo-
+cabulaire de sorte que le mot sera remplacé par le minimum de sous-mots (tokens).
+
+##### La segmentation
+
+Le rôle de **plongement de segmentation** consiste à désigner les appartenances des
+sous-mots aux phrases, par conséquent à traiter des tâches multi-entrées. 
+
+La prédiction
+de séquencement des phrases est une illustration d’une tâche de classification avec deux
+phrases en entrées, ces dernières étant présentées par un vecteur de segmentation com-
+posé d’une séquence de 0 (sous-mots de la première phrase) suivi par une séquence de 1
+(sous-mots de la deuxième)
+
+##### Plongement de position
+
+L’ordre et la position des mots dans la phrase est une information utile pour la com-
+préhension, car la conception de la phrase dans les langages naturels respecte un ordre
+défini (une phrase n’est pas un sac de mots).
+
+ Les CNN ou RNN exploitent bien les infor-
+mations locales hiérarchiques et donc tiennent compte de cette information.
+
+couche d’attention dans le transformateur: aucune règle explicite
+sur l’ordre des éléments n’est imposée, ce qui nécessite de coder cette information dans
+les entrées avant de les passer au transformateur ou bien d’introduire cette information
+dans le mécanisme d’attention afin de l’exploiter. 
+
+Ce plongement de position peut être
+**fixé ou appris**.
+
+##### Plongement contextuel
+
+représentation des entrées par la **combinaison de**
+**trois types différents de plongement**, 
+
+Les trois types de plongement utilisent tous une couche linaire en sortie qui permet d’avoir trois vecteurs de plongement de la même dimension (n,768) avec n qui définit le nombre
+de sous-mots en entrée. 
+
+Une fois les trois plongements calculés, le plongement
+contextuel équivaut à la somme des trois plongements
+
+##### L’architecture de BERT
+
+première architecture d’encodeur qui capture le contexte passé et futur
+simultanément
+
+* OpenAI GPT capture uniquement le contexte passé 
+* Elmo utilise une concaténation des contextes passé et future capturés indépendamment.
+
+**L’encodeur** est composé d’une pile de 12 blocs identiques. 
+
+chaque bloc est composé de 2 sous-couches
+
+1. mécanisme d’auto-attention à plusieurs têtes 
+2. simple réseau de feed-forward entièrement connecté (FFN). 
+
+Des connexions
+résiduelles sont utilisées autour de chacune des deux sous-couches
+
+puis une normalisation appliquée après chaque sous-couche.
+
+Le **décodeur** est également composé d’une pile de 12 (BERT base) blocs identiques. 
+
+* en plus des deux sous-couches d’encodeur, 3ème sous-couche, qui
+  effectue une attention multi-têtes sur la sortie d’encodeur
+  * les vecteurs clés et valeurs viennent de la sortie de l’encodeur
+  * la requête
+    est calculée à base d’attention sur les étiquettes dans le décodeur. 
+* Les sous-couches de
+  décodeur suivent la même procédure que celle du codeur
+
+*Attention*
+Ce processus itératif à travers les blocs aidera le réseau neuronal à capturer des rela-
+tions plus complexes entre les mots dans la séquence d’entrée. 
+
+Les **sous-couches d’attention** utilisées dans BERT correspondent à l’auto-attention à plusieurs têtes détaillée
+
+12 têtes d’attention -> peut apprendre jusqu’à 12 types de relation entre les sous-mots dans chaque bloc
+
+L’indépendance calculatoire élevée, un autre avantage, le calcul de l’attention selon chaque tête se fait indépendamment
+des autres têtes
+
+*Feed-Forward*
+
+sous-couche **Feed-Forward** composées de 2 couches linéaires entièrement connectées avec une fonction d’activation RELU entres ces deux couches. 
+
+* permet de calculer les caractéristiques hiérarchiques non linéaires. 
+* Pendant cette étape, les vecteurs de représentation des sous-mots n’interagissent pas les uns avec les autres
+
+*Liens résiduels*
+
+Dans l’encodeur et le décodeur, 
+
+* avant la normalisation des couches, **connexion résiduelle** (ou sautée) autour de chacune des 2 sous-couches
+  * utilisées pour permettre aux gradients de circuler directement dans le
+    réseau, sans passer par des fonctions d’activation non linéaires
+  * par leur nature non linéaire ces dernières font exploser ou disparaître les gradients. 
+  * forment conceptuellement un bus qui circule tout au long du réseau, cela permet de réali-
+    ser un apprentissage sur une architecture assez profonde, telle que BERT, d’une manière douce
+  * les liens résiduels déforment la topologie de la fonction de perte, en appliquant une sorte de lissage sur cette dernière
+
+*Normalisation* 
+
+* permet de résoudre le problème de décalage interne des covariables
+* concerne la variation des distributions
+  au niveau des couches
+* dû à 
+  * l’initialisation des poids ou
+  * l’échelle des caractéris-tiques en entrée ou 
+  * la dérive de distribution dans les différentes profondeurs.
+* se manifeste quand le réseau apprend et que les poids
+  sont mis à jour, de sorte que la distribution des sorties d’une couche spécifique dans le ré-
+  seau change
+* oblige les couches supérieures à s’adapter à cette dérive, ce qui ralentit
+  l’apprentissage et impacte les performances et la stabilité de réseau.
+
+* différents types
+  * **Normalisation par lot** (**batch normalisation**)
+    * consiste à calculer la moyenne et la variance de chaque mini-lot et de normaliser chaque
+      caractéristique en fonction des statistiques du mini-lot
+    * la moyenne et la variance seront différentes pour chaque min-lot
+    * cette dépendance pose des problèmes en
+      fonction de la taille des lots et de la variation entre les lots
+  * **normalisation par couche**
+    * de la même façon que la normalisation par lot, sauf que les
+      statistiques sont calculées sur l’axe de caractéristique et non pas sur l’axe des exemples.
+    * pour chaque couche une moyenne et une variance sont calculées pour chaque exemple
+      en entrée indépendamment des autres
+    *  ces deux mesures sont utilisées par la suite dans
+      la normalisation de la couche en question.
+    * L’indépendance entre les entrées est l’avantage
+      de cette méthode : chaque entrée a un fonctionnement de normalisation différent, ce
+      qui permet d’utiliser des mini-lots de taille arbitraire
+    * BERT adopte la **normalisation par couche comme mécanisme de normalisation** et le **décrochage**
+      **comme mécanisme de régularisation**
+
+Le décrochage et l’addition
+
+* décrochage (**Dropout**) = méthode de **régularisation** qui permet de réduire
+  le sur-apprentissage dans les réseaux de neurones. 
+  * co-adaptation entre les neurones
+    peut conduire à un déséquilibre des poids
+  * causé par le fait que le neurone
+    s’appuie uniquement sur quelques caractéristiques en entrée entraînant une élévation des
+    poids associés à ces caractéristiques
+  * forme des relations de co-adaptations fortes
+  * co-adaptation est une forme de sur-apprentissage 
+* décrochage = abandon de neurones choisis aléatoirement dans une couche, ce
+  qui fait que la couche suivante n’a plus qu’une information partielle (uniquement les sorties
+  des neurones conservés). 
+* empêche donc les neurones de s’appuyer toujours
+  sur les mêmes caractéristiques -> meilleure capacité de généralisation.
+* A chaque itération le neurone sera abandonné avec une probabilité p. 
+  * p élevé:
+    * le nombre de neurones décrochés est important, 
+    * la co-adaptation est donc
+      moindre 
+    *  risque de sous-apprentissage est plus élevé,
+  * p trop faible
+    * la co-adaptation augmente 
+    * le sur-apprentissage augmente aussi
+* BERT: 
+  * décrochage appliqué après chaque sous-couche avec une
+    probabilité de 0.1.
+  *  vecteurs résultant de ce décrochage additionnés à l’entrée de
+    cette sous-couche. 
+  *  vecteur-somme normalisé utilisant une normalisation
+    par couche
+
+##### Phase de pré-entraînement
+
+* permet au transformateur d’avoir une certaine compréhension générale
+  sous forme d’une capacité de représentation
+* capacité de représentation bidirec-
+  tionnelle profonde induite d’un entraînement à des tâches non supervisées (prédiction
+  des mots masqués, prédiction de la phrase suivante) sur de larges corpus (Wikipedia
+  (2,5B words), BookCorpus (800M words)). 
+* capacité de représentation transfé-
+  rée à la phase en amont = apprentissage par transfert
+  *  **transfert inductif du type multitâche** au niveau de la phase de pré-
+    entraînement
+  *  **transfert transductif du type d’adaptation de domaine** entre la phase
+    de pré-entraînement et la phase d’entraînement
+
+*La tâche de prédiction des mots masqués*
+
+* Contrairement à Elmo et à OpenAI GPT, BERTpeut capturer le contexte
+  passé et futur simultanément
+  * ce qui a empêché ses prédécesseurs de le faire, c’est le biais engendré par le partage d’informations
+    entre les deux contextes, chaque contexte (le contexte passé et le contexte
+    futur) a à travers l’autre contexte un accès direct à l’information qu’il cherche à généraliser.
+  * introduit un biais qui empêche le modèle d’apprendre les deux contextes simultané-
+    ment
+* solution de BERT: entraîner le modèle sur la généralisation du
+  contexte bidirectionnel, sur une tâche où l’information que le modèle cherche à prédire
+  est absente dans les deux contextes
+  * le partage d’informations entre contextes ne
+    pose plus de problème
+  * masquage de mots aléatoirement choisis
+  * Le modèle va ensuite apprendre à prédire ces mots masqués à partir de leur contexte bidirectionnel.
+  * permet d’acquérir
+    une bonne capacité de généralisation du contexte bidirectionnelle
+  * tâche étiquetée automatiquement, permet d'entrainer le modèle sur une quantité beaucoup plus large de données non supervisées, donc facilement disponibles.
+
+**Le but principal de la tâche de prédiction des mots masqués n’est pas d’obtenir la**
+**meilleure performance sur cette tâche, mais de transférer une bonne généralisation du**
+**contexte aux tâches en aval où il n’y a pas de masquage de mots.** 
+
+2 autres modes de remplacement proposés  pour aider le modèle à séparer le vrai du faux selon le contexte bidirection-
+nel
+
+1. remplacement par un sous-mot aléatoire 
+2. ou par le
+   mot original
+
+* BERT:
+  * masque 15% des sous-mots.
+  *  80% des sous-mots masqués seront
+    remplacés par le sous-mot [MASK],
+  * 10% par un sous-mot aléatoire 
+  * 10% conserveront
+    le mot original.
+
+ **La perte se détermine sur la façon dont BERT prédit ou pas le mot man-**
+**quant, et non sur l’erreur de reconstruction de la séquence entière.**
+
+*La tâche de prédiction de la phrase suivante*
+
+compréhension de la relation entre deux phrases pas directement capturée par la modélisation du langage utilisant la tâche de prédiction des mots
+masqués
+
+pour former un modèle qui généralise la relation entre phrases, seconde tâche étiquetée automatiquement
+
+**tâche de prédiction**
+**de la phrase suivante**
+
+*  tâche de classification binaire impliquant la prédiction pour
+  dire si la deuxième phrase succède ou pas à la première dans le corpus
+* 2 sé-
+  quences en entrée séparées par le sous-mot [SEP] et les plongements de segmentation sont
+  également utilisés pour indiquer l’appartenance des sous-mots aux phrases. 
+* Le corpus est
+  construit d’une manière équilibrée, dans 50% des cas, la phrase suivante est correctement
+  utilisée comme phrase suivante, et dans 50% des cas, une phrase est tirée aléatoirement
+  du corpus
+* garantit que le modèle s’adapte à la généralisation des relations entre les
+  séquences multiples
+
+##### Tâches en aval
+
+*Classification des séquences*
+
+* modèle pré-entraîné entraîné sur un ensemble de données supervisées pour
+  prédire la classe d’une séquence donnée
+
+* sous-mot de classification ([CLS]) utilisé
+  * sortie de ce sous-mot considérée comme la sortie groupée du classificateur et 
+  * ensuite placée dans une couche de classification entièrement connectée pour obtenir
+    la sortie étiquetée.
+
+*Reconnaissance des entités nommées*
+
+* vecteurs de représentation en sortie du transformateur directement placés
+  dans une couche de classification
+* nombre d’étiquettes comme unités de sortie pour chacun des sous-mots
+* softmax appliquée sur les vecteurs en sortie de la couche de classification
+* Les valeurs dans ces vecteurs interprétées comme la
+  probabilité de prédiction de chaque classe (types d’entités nommées)
+  * utilisées pour obtenir la classe prédite de chaque sous-mot en utilisant argmax.
+
+*Inférence en langage naturel*
+
+* modèle pré-entraîné entraîné de la même manière que pour la tâche de prédic-
+  tion de la phrase suivante. 
+* texte et hypothèse séparés à l’aide du sous-mot [SEP]
+  et identifiés à l’aide du plongement de segmentation. 
+* sous-mot [CLS] utilisé pour
+  obtenir le résultat de la classification
+* A partir d’une phrase, la tâche consiste à choisir la suite la plus plausible parmi quatre
+  choix. Donc il y 4 séquences d’entrée, chacune contenant la phrase originale et le choix correspondant concaténé à celle-ci. 
+* vecteur en sortie associé au sous-mot [CLS] transmis à une couche entièrement connectée pour obtenir les scores de chacun des choix
+* scores ensuite normalisés à l’aide d’une couche softmax
+
+*Réponse aux questions*
+
+* Un paragraphe est utilisé comme une séquence 
+* la question est utilisée comme une autre séquence.
+
+2 cas de figure à propos de cette tâche :
+
+1. la réponse se trouve dans le paragraphe
+
+* la tâche
+  consiste à trouver le début et la fin de la réponse dans le paragraphe. 
+* ntroduit un vecteur de début S ∈ RH et un vecteur de
+  fin E ∈RH , soit H la taille des vecteurs en sortie du transformateur. 
+* produit
+  de chaque sous-mot Ti et du vecteur de début S utilisé pour obtenir la pro-
+  babilité que le sous-mot i soit le début de la réponse
+*  De même, nous obtenons la
+  probabilité du sous-mot de fin j. 
+* score d’un intervalle candidat de la position i
+  à la position j est défini comme S.Ti+ E.Tj, 
+* l’intervalle de score maximum où
+  j ≥i est utilisé comme prédiction.
+
+2. pas de réponse courte à la question présente dans le
+   paragraphe
+
+* utiliser les scores
+  de probabilité pour le début et la fin de la réponse, calculés avec le vecteur de
+  représentation correspondant au [CLS] et les vecteurs de représentation des sous-
+  mots. 
+* scores (s_null) comparés avec le score maximum obtenu à la
+  meilleure plage de candidats (c’est-à-dire le meilleur score pour le premier cas)
+*  Si le
+  score obtenu est supérieur à s_null d’un seuil suffisant τ, nous utilisons le meilleur
+  score du candidat comme réponse. Le seuil τ peut être réglé pour maximiser le
+  score F1 sur la base de développement
+
+##### Variante de BERT: Bio-BERT
+
+reprend l’ architecture de BERT et
+l’entraîne sur des données biomédicales afin d’acquérir une bonne capacité de représenta-
+tion dans le domaine biomédical.
+
+Les données biomédicales utilisées sont essentiellement des ar-
+ticles et des extraits d’articles dans le domaine biomédical
+
+deux larges corpus PubMed qui compte plus de 29 millions d’extraits d’articles avec
+environ 4.5 milliards de mots et MPC où les articles sont entièrement utilisés et contient
+environ 13.5 milliards de mots.
+
+Le **vocabulaire** utilisé dans cette variante est le vocabulaire de BERT  sous l’hypothèse qu’il couvre le domaine biomédical.
+
+plusieurs versions qui diffèrent par les données utilisées et par le nombre
+d’itérations utilisé dans la phase de pré-entraînement pour adapter BERT au domaine
+biomédicale
+
+Le **prétraitement** consiste à anonymiser les entités nommées dans le texte par les sous-
+mots (@GENE$) pour la première entité et par (@DISEASE$) pour la deuxième.
+
+Dans la phase de **pré-entraînement**, les **poids du modèle sont initialisés par les poids de**
+**BERT-base** avant d’entraîner ce modèle sur les tâches non supervisées (prédiction de
+la phrase suivante et prédiction des mots masqués) en utilisant des données biomédicales
+dans le but d’acquérir une bonne généralisation de représentation des textes biomédicaux.
+
+La stratégie de transfert utilisée dans BioBERT est le **fine-tuning**
+
+* comme la rétro-propagation du gradient s’applique à tous les poids, on
+  n’ajoute qu’une seule couche pour les tâches en aval, le réseau étant déjà très profond.
+
+* appliqué sur trois tâches (la reconnaissance des entités nommées,
+  l’extraction des relations et la réponse aux questions) sur des corpus biomédicaux citant
+  ChemProt pour l’extraction des relations.
+
+  
+
+Comme BERT, utilise la fonction cross-entropy comme une
+fonction de perte, avec une optimisation réalise par l’algorithme AdamWithDecay 
+utilisant la technique de gestion de pas d’apprentissage adaptative appelée « linear war-
+mup »
+
+##### T-SNE
+
+\- Dans la première étape : l’algorithme construit une **distribution de probabilités sur*
+des paires d’objets** de grande dimension de telle sorte que **les objets similaires se voient**
+**attribuer une probabilité plus élevée** tandis que les points dissemblables se voient attribuer
+une probabilité très faible.
+\- Dans la deuxième étape : l’algorithme définit une **distribution de probabilités similaires**
+**sur les vecteurs de dimension réduite**, en **minimisant la divergence de Kullback-Leibler**
+**entre les deux distributions**. L’algorithme utilise la distance euclidienne entre les objets
+dans sa métrique de similarité.
+
+
+
+
+
+###  [Tout ce que vous devez savoir sur google bert](https://www.hebergementwebs.com/nouvelles/tout-ce-que-vous-devez-savoir-sur-google-bert)
+
+Le **bloc d'attention** multi-têtes peut être considéré comme  une méthode sophistiquée pour calculer, à partir de l'intégration de  mots d'entrée, les valeurs d'auto-attention des mots, ce qui permet au  transformateur de **comprendre comment un mot est lié à tous les autres  mots**. 
+
+contrairement au RNN, avec le réseau de transformateurs, nous ne suivons pas le mécanisme de récurrence.
+
+Au lieu d'alimenter la phrase mot par mot, nous **alimentons tous les mots de la phrase parallèlement au réseau**. Nourrir les mots en parallèle permet de réduire le temps de formation et aide également à apprendre la dépendance à long terme. 
+
+l'ordre des mots pas conservé
+
+encodage positionnel pour donner les informations sur l'ordre des mots au transformateur
+
+la sortie (représentation du codeur) obtenue à partir du codeur final (codeur le plus haut) sera la représentation de la phrase d'entrée donnée. 
+
+BERT utilise le modèle de transformateur mais n'inclut que la partie encodeur
+
+ L'encodeur du transformateur est de nature bidirectionnelle puisqu'il peut lire une phrase dans les deux sens. Ainsi, BERT est fondamentalement la représentation d'**encodeur bidirectionnel** obtenue à partir du transformateur. 
+
+nous alimentons cette phrase en tant qu'entrée dans l'encodeur du transformateur et obtenons la **représentation contextuelle (intégration) de chaque mot dans la phrase en tant que sortie**. 
+
+Une fois que nous alimentons la phrase comme entrée de l'encodeur, l'encodeur comprend le contexte de chaque mot de la phrase en utilisant le mécanisme d'attention multi-têtes (qui relie chaque mot de la phrase à tous les mots de la phrase pour apprendre la relation et la signification contextuelle des mots) et renvoie la représentation contextuelle de chaque mot de la phrase comme sortie.
+
+**nous alimentons la phrase en tant qu'entrée dans l'encodeur du transformateur et obtenons la représentation de chaque mot de la phrase en tant que sortie.**
+
+ **avec le modèle BERT, pour une phrase donnée, on obtient la représentation contextuelle (embedding ) de chaque mot dans la phrase comme sortie**.
+
