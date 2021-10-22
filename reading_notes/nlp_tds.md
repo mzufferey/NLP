@@ -3003,3 +3003,149 @@ Une fois que nous alimentons la phrase comme entrée de l'encodeur, l'encodeur c
 
  **avec le modèle BERT, pour une phrase donnée, on obtient la représentation contextuelle (embedding ) de chaque mot dans la phrase comme sortie**.
 
+### [All You Need to know about BERT](https://www.analyticsvidhya.com/blog/2021/05/all-you-need-to-know-about-bert/)
+
+. Language representations are of two types: 
+
+(i) **Context-free** language  representation such as Glove and Word2vec where embeddings for each  token in the vocabulary are constant and it doesn’t depend on the  context of the word. 
+
+(ii) **Contextual** language representation such as  Elmo and OpenAI-GPT where token representation depends on the context of the word where it is used.
+
+With a contextual model, we get the representation of each token based  on the sentence in which that token is used resulting in a better  understanding of the language by the machine. The BERT model helps in  generating the contextual representation of each token. It is even able  to get the context of whole sentences, sentence pairs, or paragraphs.
+
+BERT basically uses the concept of pre-training the model on a very  large dataset in an unsupervised manner for language modeling. 
+
+After pre-training, the model can be fine-tuned on the task-specific supervised dataset to achieve good results
+
+2 types of strategies can be applied namely 
+
+1. features-based and  
+   * e.g. Elmo 
+   *  model architectures are task-specific. 
+   * uses different models for  different tasks and uses a pre-trained model for language  representations.
+2. fine-tuning.
+   * e.g. BERT 
+   * the final  model for any task is almost the same as BERT. 
+   *  uses deep  bidirectional layers of transformers encoders for language understanding 
+
+BERT’s model architecture is based on Transformers. It uses multilayer bidirectional transformer encoders for language representations. 
+
+BERT uses the same model architecture for all the tasks be it NLI, classification, or Question-Answering with minimal change such as adding an output layer for classification.
+
+##### **Input-Output Format**
+
+The whole input to the BERT has to be given a single  sequence
+
+special tokens [CLS] and [SEP] to understand input  properly
+
+[SEP] token has to be inserted at the end of a single input
+
+* when a task requires more than one input such as NLI and Q-A tasks,  [SEP] token helps the model to understand the end of one input and the  start of another input in the same sequence input. 
+
+[CLS]  special  classification token 
+
+* the last hidden state of BERT corresponding to  this token (h[CLS]) is used for classification tasks. 
+
+BERT  uses **Wordpiece embeddings input for tokens**. 
+
+Along with token embeddings, BERT uses **positional embeddings** and **segment embeddings** for each token.  
+
+* Positional embeddings contain information about the position of tokens  in sequence. 
+* Segment embeddings help when model input has sentence  pairs. 
+  * Tokens of the first sentence will have a pre-defined embedding of 0 
+  * tokens of the second sentence will have a pre-defined  embedding of 1 as segment embeddings
+
+**Final Embeddings** used by model architecture are the sum of  token embedding, positional embedding as well as segment embedding. The  final embeddings are then fed into the deep bidirectional layers to get  output. The output of the BERT is the hidden state vector of pre-defined hidden size corresponding to each token in the input sequence. These  hidden states from the last layer of the BERT are then used for various  NLP tasks.
+
+##### **Pre-training and Fine-tuning**
+
+BERT was pre-trained on unsupervised Wikipedia and Bookcorpus  datasets using language modeling. Two tasks were performed. 
+
+1. Masked Language Model (MLM)
+   * 15% of the tokens from the sequence were masked and then correct tokens  were predicted at the final hidden state. 
+2. Next Sentence Prediction
+   * To capture the relationship  between sentence pairs given as input
+   * 50% of the  data is labeled as isNext where sentence B of the input sequence is just the next sentence of sentence A from the dataset corpus. 
+   * Another 50% of data is labeled as notNext where sentence B is not next to sentence A  but any random sentence from the corpus dataset. 
+   * Output hidden state  corresponding to [CLS] token is used to predict the correct label and  compute loss. 
+
+After pre-training, BERT can be **fine-tuned** on the specific task-based dataset.
+
+##### How to use BERT
+
+For the implementation of BERT for any task on our dataset,  pre-trained weights are available and we can easily use those  pre-trained weights to fine-tune the model on our own dataset. 
+
+need to use the same tokenizer and tokens index  mapping using which model has been pre-trained. We can get the tokenizer using the code given below.
+
+### [Understanding BERT with Hugging Face](https://becominghuman.ai/understanding-bert-with-hugging-face-e041c08f3431)
+
+What is a Question Answering Task?
+
+In this task, we are given a question and a paragraph in which the answer lies to our BERT Architecture and the objective is to determine the start and end span for the answer in the paragraph.
+
+ we provide two inputs to the BERT architecture. The paragraph and the question are separated by the <SEP> token. 
+
+ two vectors S and E (which will be learned during fine-tuning) both  having shapes (1x768). 
+
+take a dot product of these vectors with  the second sentence’s output vectors from BERT, giving us some scores.  
+
+Softmax over these scores to get probabilities. 
+
+training objective is the sum of the log-likelihoods of the correct  start and end positions.
+
+
+
+### [Question Answering with a fine-tuned BERT](https://towardsdatascience.com/question-answering-with-a-fine-tuned-bert-bc4dafd45626)
+
+For tasks like text classification, we need to fine-tune BERT on our  dataset. But for question answering tasks, we can even use the already  trained model and get decent results even when our text is from a  completely different domains.
+
+ **[CLS]** token stands for classification and is there to **represent  sentence-level classification** and is used when we are classifying. 
+
+**[SEP]** isused to separate the two pieces of text.
+
+**Segment embeddings** help BERT in differentiating a question from the  text. In practice, we use a vector of 0's if embeddings are from  sentence 1 else a vector of 1’s if embeddings are from sentence 2.  
+
+**Position embeddings** help in specifying the position of words in the  sequence. A
+
+BERT uses **wordpiece tokenization**. In BERT, rare words get broken down into subwords/pieces. Wordpiece  tokenization uses ## to delimit tokens that have been split. 
+
+The idea behind using wordpiece tokenization is to reduce the size of the vocabulary which improves training performance. 
+
+###  [How to Fine-Tune Sentence-BERT for Question Answering](https://www.capitalone.com/tech/machine-learning/how-to-finetune-sbert-for-question-matching/) 
+
+#####  What is Sentence-BERT?
+
+Sentence-BERT is a word embedding model. 
+
+* models used to numerically represent language by transforming  phrases, words, or word pieces (parts of words) into vectors. 
+* can be pre-trained on a large background corpus (dataset) and  then later updated with a smaller corpus that is catered towards a  specific domain or task (**fine-tuning**)
+
+The best word embedding models are able to represent text meaning,  including context. 
+
+BERT, from which Sentence-BERT is  derived, is one of these high-performing models.
+
+**Sentence-BERT** has been optimized for faster similarity computation **on the individual sentence level**, 
+
+
+
+### [Question Answering with a Fine-Tuned BERT](https://mccormickml.com/2020/03/10/question-answering-with-a-fine-tuned-BERT/)
+
+SQuAD benchmark, Given a question, and *a passage of text containing the answer*, BERT needs to highlight the “span” of text corresponding to the correct answer.
+
+##### BERT Input Format
+
+To feed a QA task into BERT, we pack both the question and the reference text into the input.
+
+The two pieces of text are separated by the special `[SEP]` token.
+
+BERT also uses “Segment Embeddings” to differentiate the question  from the reference text. These are simply two embeddings (for segments  “A” and “B”) that BERT learned, and which it adds to the token  embeddings before feeding them into the input layer.
+
+##### Start & End Token Classifiers
+
+BERT needs to highlight a “span” of text containing the answer–this  is represented as simply **predicting which token marks the start of the  answer, and which token marks the end.**
+
+For every token in the text, we feed its final embedding into the  start token classifier. **The start token classifier only has a single set of weights which it applies to every word.**
+
+After taking the **dot product** between the output embeddings and the  ‘start’ weights, we apply the **softmax** activation to produce a  probability distribution over all of the words. Whichever word has the  highest probability of being the start token is the one that we pick.
+
+We repeat this process for the end token–we have a separate weight vector this.
