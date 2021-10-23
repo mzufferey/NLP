@@ -3149,3 +3149,239 @@ For every token in the text, we feed its final embedding into the  start token c
 After taking the **dot product** between the output embeddings and the  ‘start’ weights, we apply the **softmax** activation to produce a  probability distribution over all of the words. Whichever word has the  highest probability of being the start token is the one that we pick.
 
 We repeat this process for the end token–we have a separate weight vector this.
+
+### [How to Train A Question-Answering Machine Learning Model (BERT)](https://blog.paperspace.com/how-to-train-question-answering-machine-learning-models/)
+
+ a completely new neural network architecture based on attention, specifically self-attention, called Transformer, has been the real game-changer in NLP
+
+A **language model** is a probabilistic model that learns the probability of the occurrence of a sentence, or sequence of tokens, based on the examples of text it has seen during training. For
+
+Traditionally **RNNs** were used to train such models due to the sequential structure of language, but they are **slow to train** (due to sequential processing of each token) and sometimes **difficult to converge** (due to vanishing/exploding gradients)
+
+different variants of **Transformers**, with their ability to process tokens in **parallel** and impressive performance due to **self-attention** mechanism and **different pre-training objectives**, have made training large models (and sometimes really really large models), which understand natural language really well, possible
+
+**BERT** has been trained using the Transformer Encoder architecture, with Masked Language Modelling (MLM) and the Next Sentence Prediction (NSP) pre-training objective.
+
+BERT uses Transformer Encoder from the original Transformer paper
+
+An **Encoder** has a **stack of encoder blocks** (where the output of one block is fed as the input to the next block), and each encoder block is composed of **two neural network layers**. 
+
+1. **self-attention layer** (which is the magic operation that makes transformers so powerful)
+2.  a simple **feed-forward layer**. 
+
+After each layer, there is a **residual connection** and a **layer normalization** operation 
+
+for each encoder layer, **the number (with a maximum limit of 512) of input vectors and output vectors is always the same**
+
+before the first encoder layer, the **input vector for each token is obtained by adding token embedding, positional embedding, and segment embedding**. 
+
+**These vectors are processed in parallel** inside each encoder layer using matrix multiplications, and the obtained output vectors are fed to the next encoder block
+
+After being processed sequentially through N such blocks, the obtained output vectors start understanding natural language very well.
+
+A **pre-training objective** is a task on which a model is trained before being fine-tuned for the end task. 
+
+* **GPT** models are trained on a  Generative Pre-Training task i.e. generating the  next token given previous tokens, before being fine-tuned 
+* **BERT uses MLM and NSP as its pre-training objectives**.
+  * a few special tokens like CLS, SEP, and MASK to complete these objectives. 
+  * each tokenized sample fed to BERT is **appended with a CLS token** **in the  beginning** and **the output vector of CLS from BERT is used for different  classification tasks.** 
+  * **MLM objective**, a percentage of tokens are masked i.e. replaced with  special token MASK, and the model is asked to **predict the correct token  in place of MASK**. 
+    * To accomplish this a masked language model head is  added **over the final encoder block, which calculates a probability**  distribution over the vocabulary only for the output vectors (output  from the final encoder block) of MASK tokens.
+  * in **NSP**, the **2  sentences tokenized and the SEP token appended at their end are  concatenated** and fed to BERT. The **output vector of the CLS token is then used to calculate the probability** of whether the second sentence in the pair is the subsequent sentence in the original document. 
+  * For both the  objectives, standard cross-entropy loss with AdamW optimizer is used to  train the weights.
+  * powerful pre-training objectives in capturing the  semantics of the natural language in comparison to other pre-training  objectives
+  * After being trained on such pre-training objectives, these models are  **fine-tuned** on special tasks like question answering, name entity  recognition, etc. 
+
+**SQuAD** is a popular dataset for this task which contains many paragraphs  of text, different questions related to the paragraphs, their answers,  and the start index of answers in the paragraph.
+
+SQuAD2.0 contains over 50,000 unanswerable questions that look similar to the answerable ones
+
+to perform the QA task we add a new question-answering head on top of BERT, 
+
+The purpose of this question-answering head is to **find the start token and end token** of an answer for a given paragraph
+
+Everything that comes in between, including the start and end token, is considered an answer.	
+
+**Inside the question answering head are two sets of weights**, one for the  start token and another for the end token, which have the same  dimensions as the output embeddings.
+
+The output embeddings of all the tokens are fed to this head, and a dot  product is calculated between them and the set of weights for the start  and end token, separately.
+
+the **dot product** between the  start token weight and output embeddings is taken, and the dot product  between the end token weight and output embeddings is also taken. 
+
+Then a **softmax** activation is applied to produce a probability distribution  over all the tokens for the start and end token set (each set also  separately). T
+
+he tokens with the maximum probability are chosen as the  start and end token, respectively. 
+
+ it may so happen  that the end token could appear before the start token. In that case an  empty string is output as the predicted answer. 
+
+In popular implementations, this head is implemented as a  feed-forward layer that takes the input of the same dimension as the  BERT output embeddings and returns a two-dimensional vector, which is  then fed to the softmax layer. 
+
+The complete BERT SQuAD model is  finetuned using cross-entropy loss for the start and end tokens.
+
+### [BERT for question answering (Part 1)](https://dida.do/blog/bert-for-question-answering-part-1)
+
+the terms "encoder" and "decoder" are interpreted in a slightly different way compared to for example commonly used convolution neural networks: we **do not have the typical "encoding" in the sense of layers getting narrower and the typical "decoding" in the sense of layers getting wider** (like for example in an autoencoder network). 
+
+**the decoder consumes model outputs of previous sequence components as an input**: this distinguishes both components of the network.
+
+ **residual connections** **which skip the attention layers** and feed the output of a previous layer directly into an **addition layer** including a layer **normalization** .
+
+Transformers make use of the so-called **attention mechanism**, . The idea of the attention mechanism is to **obtain every decoder output as a weighted combination of all the input tokens**. 
+
+Prior to this approach, most NLP tasks based on **RNNs usually obtained an output from a single aggregated value of all the previous objects** in the input sequence. This is quite a big problem especially for long input sequences, since information at the end of the input sequences **compresses all prior sequence components, thereby potentially introducing a lot of noise**.
+
+The idea is that the encoding-decoding process based on the **attention mechanism** now performs the particular task (such as translation) **in combination with an "alignment search"**, i.e. it additionally learns how each one of individual input sequence components is involved in the resulting output sequence instead of just going through a prescribed output order via "classical" end-to-end RNN decoding. ; in terms of the **weights** , which determine the influence of the i-th input component on the j-th output component
+
+For the case of the transformer, **multiple attention layers** are stacked in order to obtain the encoder and decoder structures.
+
+All layers contained in the model have the same size - note that this is also needed for the residual connections.
+
+The raw BERT model can take **either a single sentence or two sentences as a token sequence input**, which makes BERT flexible for a variety of downstream tasks. 
+
+The ability to process two sentences can for example be used for question/answer pairs. BERT comes with is own tokenization facility.
+
+As an input representation, BERT uses **WordPiece embeddings**,. Given a vocabulary of ~30k word chunks, BERT breaks words up into components - resulting in a **tokenization**
+
+**WordPiece is a language representation model on its own.** Given a desired vocabulary size, WordPiece tries to **find the optimal tokens** (= subwords, syllables, single characters etc.) **in order to describe a maximal amount of words in the text corpus**.
+
+The important part here is that **WordPiece is trained separately from BERT and basically used as a black box to perform vectorization of input sequences in a fixed vocabulary.** This procedure will be **performed for every word** in the input after a general string sanitizing. 
+
+The catch of the WordPiece idea is that BERT can represent a relatively large catalog of words with a vector of fixed dimension corresponding to the vocabulary of chunks.
+
+ There are several ways to deal with out-of-vocabulary tokens. 
+
+The **tokens generated by WordPiece are usually mapped to IDs in the corresponding vocabulary** to obtain a numerical representation of the input sequence. These IDs are typically just the **number of the index in the vocabulary list (however, it is also possible to use hash functions** on the tokens).
+
+ It is actually fairly easy to perform a manual WordPiece tokenization by using the vocabulary from the vocabulary file of one of the pretrained BERT models and the tokenizer module from the official BERT repository.
+
+The characters **##** indicate that the token is associated  with the previous token (for example by breaking up a single word into  tokens). 
+
+In BERTs case, the **numerical representation** of the tokens is  just the **mapping to their indices** in the vocabulary:
+
+In case **two sentences** are passed to BERT, they are separated by using a special **[SEP]** token. 
+
+All inputs start with a **[CLS]** token, which indicates the beginning of a token sequences and is later  **used as a representation for classification** tasks
+
+The **token embeddings will be compared to word embedding lookup tables** and become the so-called **token input embedding** 
+
+
+
+Assuming that we have now obtained the **token embeddings**  (that is,  word embeddings generated from either a mapping of tokens to IDs or a one-hot encoded version), a learned **sentence embedding**  is added, depending on the sentence which the token belongs to.
+
+BERT uses an embedding of the token position in the input sequence: the **positional embedding**; vectors of the same size as the other two  embeddings. needed since BERT itself does  not have an intrinsic sequential ordering like for example a recurrent  neural network; embedding rule in terms of a  vector consisting of **sinusoids** was proposed
+
+Learning the positional embeddings has also been proposed.
+
+By propagating this input representation through the full model we will then obtain the final hidden embedding
+
+ During the **pretraining** phase, BERT performs two particular tasks:
+1. **Masked Language Modeling**:
+
+tokens of the input sequences are chosen at random (15% of the original input sequence tokens). 
+
+Among these selected tokens, a **word replacement** routine with a [MASK] token
+
+. In order to not introduce a model bias towards the mask token, a small percentage of the selected tokens are replaced with a randomly chosen token or remain unchanged. 
+
+The hidden representation of the input tokens will then be used in combination with a softmax classifier in order to predict the selected tokens from BERTs vocabulary under a cross entropy risk.
+
+2. **Next Sentence Prediction**:
+
+This task is performed in order to **learn connections between sentences**. 
+
+sentence pairs are formed. 
+
+Whenever the pairs are subsequent in the original text, a IsNext label is attached to them. 
+
+Whenever the sentence pairs are not subsequent in the original texts, a NotNext label is attached. 
+
+The training dataset is generated of 50% pairs with IsNext label and 50% NotNext label. 
+
+BERT now **predicts the two labels as a binary classifier based on the hidden layer embedding of the [CLS] token** of the input sequence
+
+
+
+**Fine-tuning** of BERT is always **associated with a  particular practical task** such as for example classification. 
+
+The  **pretraining version of BERT (that is, the weights obtained from the  Masked Language Modeling and Next Sentence Prediction training routines  outlined above) are used as starting weights** for a supervised learning  phase.
+
+Depending on the specific task, various components of BERTs input can be used. 
+
+For a text sequence classification task, the  representation of the `[CLS]` token will be used. 
+
+For tasks  involving two sentence inputs such as paraphrasing and question/answer  problems, we make use of the sentence A/B mechanism
+
+Usually, **additional neurons/layers are added to the output layer** of BERT: in the classification case this could for example be a softmax output. 
+
+ Typically, the fine-tuning phase is a **much faster** procedure than the  pretraining phase, since the transfer from Masked Language Modeling and  Next Sentence Classification to the particular fine-tuning task allows  to **start from a near-converged state.**
+
+
+
+### [BERT Explained: State of the art language model for NLP](https://towardsdatascience.com/bert-explained-state-of-the-art-language-model-for-nlp-f8b21a9b6270)
+
+BERT’s key technical innovation is **applying the bidirectional training of Transformer, a popular attention model, to language modelling**
+
+a novel technique named Masked LM (MLM) which allows bidirectional training in models in which it was previously impossible.
+
+In its vanilla form, Transformer includes two separate mechanisms — an **encoder** that reads the text input and a **decoder** that produces a prediction for the task
+
+**Since BERT’s goal is to generate a language model, only the encoder mechanism is necessary.** 
+
+As opposed to directional models, which read the text input sequentially (left-to-right or right-to-left), **the Transformer encoder reads the entire sequence of words at once**. Therefore it is considered **bidirectional**, though it would be more accurate to say that it’s non-directional. This characteristic **allows the model to learn the context** of a word based on all of its surroundings (left and right of the word).
+
+When training language models, there is a challenge of defining a prediction goal. Many models predict the next word in a sequence (e.g. “The child came home from ___”), a directional approach which inherently limits context learning. To overcome this challenge, BERT uses two training strategies:
+
+1. **Masked LM (MLM)**
+
+Before feeding word sequences into BERT, 15% of the words in each sequence are replaced with a **[MASK]** token. 
+
+The model then attempts to predict the original value of the masked words, based on the context provided by the other, non-masked, words in the sequence. 
+
+the prediction of the output words requires:
+
+1. Adding a **classification layer** on top of the encoder output.
+2. **Multiplying the output vectors by the embedding matrix**, transforming them into the vocabulary dimension.
+3. Calculating the probability of each word in the vocabulary with **softmax**.
+
+The **BERT loss function takes into consideration only the prediction of the masked values** and ignores the prediction of the non-masked words. As a consequence, the model **converges slower** than directional models, a characteristic which is offset by its increased context awareness 
+
+In practice, the BERT implementation is slightly more elaborate and doesn’t replace all of the 15% masked words
+
+Training the language model in BERT is done by predicting 15% of the tokens in the input, that were randomly picked. These tokens are pre-processed as follows — 80% are replaced with a “[MASK]” token, 10% with a random word, and 10% use the original word. Intuition:
+
+* If we used [MASK] 100% of the time the model wouldn’t necessarily produce good token representations for non-masked words. The non-masked tokens were still used for context, but the model was optimized for predicting masked words.
+* If we used [MASK] 90% of the time and random words 10% of the time, this would teach the model that the observed word is never correct.
+* If we used [MASK] 90% of the time and kept the same word 10% of the time, then the model could just trivially copy the non-contextual embedding.
+
+2. **Next Sentence Prediction (NSP)**
+
+the model receives pairs of sentences as input and learns to predict if the second sentence in the pair is the subsequent sentence in the original document. 
+
+During training, 50% of the inputs are a pair in which the second sentence is the subsequent sentence in the original document, while in the other 50% a random sentence from the corpus is chosen as the second sentence. 
+
+the input is processed in the following way before entering the model:
+
+1. A **[CLS]** token is inserted at the beginning of the first sentence and a **[SEP]** token is inserted at the end of each sentence.
+2. A **sentence embedding** indicating Sentence A or Sentence B is added to each token. Sentence embeddings are similar in concept to token embeddings with a vocabulary of 2.
+3. A **positional embedding** is added to each token to indicate its position in the sequence. The concept and implementation of positional embedding are presented in the Transformer paper.
+
+To predict if the second sentence is indeed connected to the first, the following steps are performed:
+
+1. The **entire input sequence goes through the Transformer** model.
+2. The **output of the [CLS] token** is transformed into a 2×1 shaped vector,  using a simple classification layer (learned matrices of weights and  biases).
+3. Calculating the probability of IsNextSequence with **softmax**.
+
+When training the BERT model, **Masked LM and Next Sentence Prediction are  trained together,** with the goal of minimizing the combined loss function of the two strategies.
+
+
+
+BERT can be used for a wide variety of language tasks, while only **adding a small layer to the core model**:
+
+1. **Classification** tasks such as sentiment analysis are done similarly to Next Sentence  classification, by adding a classification layer on top of the  Transformer output for the [CLS] token.
+2. In **Question Answering** tasks (e.g. SQuAD v1.1), the software receives a  question regarding a text sequence and is required to mark the answer in the sequence. Using BERT, a Q&A model can be trained by **learning  two extra vectors that mark the beginning and the end of the answer.**
+3. In **Named Entity Recognition** (NER), the software receives a text sequence  and is required to mark the various types of entities (Person,  Organization, Date, etc) that appear in the text. Using BERT, a NER  model can be trained by feeding the output vector of each token into a  **classification layer** that predicts the NER label.
+
+In the fine-tuning training, most hyper-parameters stay the same as in  BERT training, and the paper gives specific guidance (Section 3.5) on  the hyper-parameters that require tuning. 
+
+BERT’s **bidirectional approach (MLM) converges slower** than left-to-right approaches (because only 15% of words are predicted in each batch) but bidirectional training still outperforms left-to-right training after a small number of pre-training steps.
+
