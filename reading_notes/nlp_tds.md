@@ -3385,3 +3385,26 @@ In the fine-tuning training, most hyper-parameters stay the same as in  BERT tra
 
 BERT’s **bidirectional approach (MLM) converges slower** than left-to-right approaches (because only 15% of words are predicted in each batch) but bidirectional training still outperforms left-to-right training after a small number of pre-training steps.
 
+
+
+
+
+### [Siamese Network & Triplet Loss](https://towardsdatascience.com/siamese-network-triplet-loss-b4ca82c1aec8)
+
+ There are many use cases where the amount of data available for the  model to train on is considerably low, this hinders the model’s ability  to learn features that help it make the prediction.
+
+**One shot learning** is the technique of **learning representations from a  single sample**. Take the example previously mentioned, suppose there is  an organisation and it wants a facial recognition system to allow access to the building for its employees and you are given the task of  building such a system. The problem with this task is that the  organisation might not have more than ten images for each of the  employee. Therefore, building and training a typical convolutional  neural network will not work as it cannot learn the features required  with the given amount of data. So, this is a **one shot learning task  where you build a similarity function which compares two images and  tells you if there is a match**.
+
+The **similarity function** will return a value and if that value is  lesser than or equal to a threshold value, you could say that the two  images are similar, else they are not.
+
+In **Siamese networks**, we take **an input image of a person and find out the  encodings of that image, then, we take the same network without  performing any updates on weights or biases and input an image of a  different person and again predict it’s encodings**. Now, we  compare these two encodings to check whether there is a similarity  between the two images. These two encodings act as a latent feature  representation of the images. Images with the same person have similar  features/encodings. Using this, we compare and tell if the two images  have the same person or not.
+
+You might be wondering, how to actually train the network? you can train  the network by taking an anchor image and comparing it with both a  positive sample and a negative sample. The dissimilarity between the  anchor image and positive image must low and the dissimilarity between  the anchor image and the negative image must be high.
+
+Therefore, by using **triplet loss function**  we calculate the gradients and with the  help of the gradients, we update the weights and biases of the siamese  network. For training the network, we take an anchor image and randomly  sample positive and negative images and compute its loss function and  update its gradients.
+
+A Siamese neural network (sometimes called a twin neural network) is an artificial neural network that uses the same weights while working in tandem on two different input vectors to compute comparable output vectors.[1][2][3][4] Often one of the output vectors is precomputed, thus forming a baseline against which the other output vector is compared.
+
+ perhaps most well-known application of twin networks are face recognition, where known images of people are precomputed and compared to an image from a turnstile or similar. 
+
+Learning in twin networks can be done with triplet loss or contrastive loss. For learning by triplet loss a baseline vector (anchor image) is compared against a positive vector (truthy image) and a negative vector (falsy image). The negative vector will force learning in the network, while the positive vector will act like a regularizer. For learning by contrastive loss there must be a weight decay to regularize the weights, or some similar operation like a normalization. 
