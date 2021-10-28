@@ -154,3 +154,7 @@ exhibit behavior related to the syntactic and semantic structure of the sentence
 
 A **cone program** is an optimization problem in which the objective is to minimize a linear function over the intersection of a subspace and a convex cone. every convex optimization problem can be expressed as a cone program
 
+a **triplet network** consist of three replicas of a feedforward network that share identical weights. It
+
+**ILP is a linear optimization problem with linear constraints**
+**and the values of variables are restricted to integers**
