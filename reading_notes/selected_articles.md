@@ -592,3 +592,299 @@ This framework is general and can **cope with constraints**
 **ILP is a linear optimization problem with linear constraints**
 **and the values of variables are restricted to integers**
 
+
+
+### Hybrid self-interactive attentive siamese network for medical textual semantic similarity - An et al. 2020
+
+medical texts, but it is difficult to process these texts due to many similar sentences
+
+estimating the similarity of medical texts has become a key technology, filtering out medical texts quickly. Nowadays,
+
+many methods for estimation similarity between medical sentences extract semantic features mainly via Siamese network
+
+these methods don't achieve the best results due to the large amount of noise in the texts.
+
+To improve the performance of the Siamese network, a hybrid self-interactive attention model is proposed in this paper. The
+
+The aim is to reduce the noise of the text and strengthen the token with high correlation between the two texts
+
+uses BERT as the embedding layer to carry out a preliminary pre- training of text.
+
+it is difficult to obtain interesting texts from these medical texts due to the similarity among these sentences.
+
+The prediction of textual semantic similarity can solve this problem.
+
+medical texts often contain professional and uncommon medical words with similar semantics, which makes it difficult to evaluate the similarity of medical texts from the perspective of words and sentences. Siamese
+
+**Siamese convolution network solve the task of text similarity**
+
+The Siamese network contains **two inputs**, which correspond to two texts to predict similarity. The Siamese network extracts the semantic features of the two input sentences through **two sub-networks with shared parameters** and evaluates the similarity between sentences via the extracted semantic features.
+
+the sub-network in Siamese network can be replaced. In Siamese network[7], recurrent neural network is used as sub-network
+
+Siamese network is better than information retrieval and word frequency co-occurrence in text similarity, there is still the possibility to continue to improve performance via integrating other existed method/mechanism.
+
+**Attention mechanism** can reprocess the two semantic features of Siamese network, the relevant part of semantic feature is enlarged and the noise is reduced, which may improve the evaluation results
+
+Attention mechanism can be divided into 
+
+1. **self-attention** mechanism
+   * can expand the useful part of the text and reduce the useless part, so that the model can quickly learn useful features. Self-attention mechanism is mainly used in text **categorization**
+2.  **interactive** attention mechanism 
+   *  application of **text similarity** task in attention mainly uses interactive attention mechanism to improve the semantic representation between two sentences
+
+interactive attention is more frequently used in text similarity tasks, because interactive attention mechanism can calculate a comprehensive attention weight via two input semantic features
+
+**The interactive attention weights denote the correlation between the two semantic features**
+
+Nevertheless, the interactive attention mechanism cannot play any role in two unrelated sentences, and it may even magnify the unrelated parts of the features. Such a model often predicts higher results than the real value. For
+
+we modify the interactive attention mechanism by multiplying each sentence feature by the self-attention weight of the comparative sentence feature, which not only learns the features of the comparative sentence, but also makes the text independent.
+
+a fatal weakness of interactive attention in text similarity task that it cannot enhance the independence of each sentence while improving the interaction between sentences.
+
+this happens to be the advantage of self-attention mechanism
+
+Self-attention mechanism strengthens the more influential part of its own text by learning its own text.
+
+Considering from the perspective of text similarity task, it makes sentences more independent
+
+**similarity score** of text similarity task prediction is the distance calculated by distance formula according to the semantic features trained by Siamese network
+
+to increase the interaction between the two texts and keep the independence of the text from declining, we try to calculate the distance between the semantic features obtained by self-attention and the semantic features obtained by interactive attention (so we can get two distances), and then calculate the average of the two semantic distances to get the final prediction results.
+
+BERT pre-training sentence vectors are used as input, and the initial semantic features of two sentences are obtained by training the vector representation of two sentences through Bi-LSTM network of Siamese framework
+
+(BERT) as the embedding layer of the experiment. BERT[11]implements context dependency in text by bidirectional Transformer encoding. Transformer[8]is the network structure of the encoder-decoder framework. All tokens in the sequence can be processed in parallel due to multi-head attention mechanism.
+
+the Bi-directional Long Short-Term Memory (Bi-LSTM) network ,performing well in the RNN ,is chosen as our sub-networks. Bi-LSTM consists of forward LSTM and backward LSTM. Meanwhile, LSTM model contains forgetting gate, memory gate and output gate. The model discards useless information through forgetting gate, stores useful information through memory gate, and finally outputs the results via output gate.
+
+Hybrid self-interactive attention uses both self-attention and interactive attention to integrate their characteristics
+
+text similarity experiments need to compare the similarity between two texts, we need to pay attention not only to each text itself, but also to the degree of influence between texts. In our experiment, we used three kinds of Interactive Attention. Interactive Attention Network, Single Interactive Attention and Merge Interactive Attention
+
+### Differentiation of blackbox combinatorial solvers - Vlastelica et al. 2020
+
+fusion of deep learning with combinatorial algorithms promises
+
+One possible approach is to introduce combinatorial building blocks into neural networks.
+
+Such end-to-end architec- tures have the potential to tackle combinatorial problems on raw input data such as ensuring global consistency in multi-object tracking or route planning on maps in robotics.
+
+a method that implements an efficient back- ward pass through blackbox implementations of combinatorial solvers with linear objective functions
+
+toolbox of popular methods in computer science currently sees a split into two major com- ponents
+
+1. classical algorithmic techniques from discrete optimization – graph algorithms, SAT-solvers, integer programming solvers – often with heavily optimized im-
+   plementations and theoretical guarantees on runtime and performance
+
+2. deep learning allowing data-driven feature extraction as well as the flexible design of end-to-end architectures
+
+The **fusion of deep learning with combinatorial optimization** is desirable both for foundational reasons – extending the reach of deep learning to data with large combinato- rial complexity – and in practical applications.
+
+for example in computer vision problems that require solving a combinatorial sub-task on top of features extracted from raw input such as establishing global consistency in multi-object tracking from a sequence of frames
+
+**The fundamental problem with constructing hybrid architectures is differentiability of the combina- torial components.**
+
+State-of-the-art approaches pursue the following paradigm: introduce suitable **approximations or modifications of the objective function** or of a baseline algorithm that eventu- ally yield a differentiable computation. 
+
+* The resulting algorithms are often sub-optimal in terms of runtime, performance and optimality guarantees when compared to their unmodified counterparts.
+
+the sources of sub-optimality vary from example to example, there is a common theme: **any differentiable algorithm in particular outputs continuous values and as such it solves a relaxation of the original problem**. It
+
+It is well-known in combinatorial optimization theory that even strong and practical convex relaxations induce lower bounds on the approximation ratio for large classes of problems which makes them inherently sub-optimal
+
+a method that, **at the cost of one hyperparameter, implements a backward pass for a blackbox implementation of a combinatorial algorithm or a solver that optimizes a linear objective function**
+
+This effectively **turns the algorithm or solver into a composable building block of neural network architectures,** as
+
+The main technical challenge boils down to **providing an informative gradient of a piecewise con- stant function**.
+
+leverage the minimization structure of the un- derlying combinatorial problem and efficiently compute a gradient of a continuous interpolation
+
+The computational cost of the introduced backward pass matches the cost of the forward pass.
+
+The task to solve during back-propagation is the following. We receive the gradient dL/dy of the global loss L with respect to solver output y at a given point ˆy = y( ˆw). We are expected to return dL/dw, the gradient of the loss with respect to solver input w at a point ˆ
+
+Since Y is finite, there are only finitely many values of y(w). In other words, this function of w is piecewise constant and the gradient is identically zero or does not exist (at points of jumps).
+
+* if one does a small perturbation to edge weights of a graph, one usually does not change the optimal TSP tour and on rare occasions alters it drastically. This
+
+**The fundamental problem with differentiating through combinatorial solvers is not the lack of differentiability; the gradient exists almost everywhere. However, this gradient is a constant zero and as such is unhelpful for optimization.**
+
+we will not rely on standard techniques for gradient estimation
+
+
+
+### Optimization with Constraint Learning: A Framework and Survey - Fajemisin et al. 2021
+
+In ML, a loss function provides a measure of the difference between the value predicted by the ML algorithm and the actual value. It follows then that ML practitioners seek to minimize this loss function, which leads to the use of **Optimization** for ML
+
+In certain applications, e.g. deep neural networks, the objective function of the learning task is non-convex, leading to the application of non-convex op- timization methods
+
+machine learning is inherently linked to optimization,
+
+more and more attention for using ML
+for optimization. Optimization
+
+In addition to using traditional ML approaches to learn constraints for optimization problems (e.g. regression trees and linear regression in (Verwer et al., 2017) and neural networks, other tech- niques such as genetic programming , mixed-integer linear programming (MILP) and symbolic regression have also been used.
+
+### Machine learning for combinatorial optimization: A methodological tour d'horizon - Bengio et al. 2021
+
+leveraging machine learning to solve combinatorial optimization problems.
+
+pushing further the integration of machine learning and combinatorial optimization and
+
+seeing generic optimization problems as data points and inquiring what is the relevant distribution of problems to use for learning on a given task.
+
+we focus on **discrete optimization problems** formulated as **integer constrained optimiza- tion,** i.e. , with integral or binary variables (called decision vari- ables). While
+
+not all such problems are hard to solve ( e.g. , shortest path problems), we concentrate on **combinatorial optimization problems** (**NP-hard**)
+
+for those problems, it is considered unlikely that an algorithm whose run- ning time is polynomial in the size of the input exists.
+
+in practice, combinatorial optimization algorithms can solve instances with up to millions of decision variables and constraints
+
+diverse types of problems are solved by leveraging their special structure.
+
+Other algorithms, designed to be general, are found in hindsight to be empirically more efficient on particular problems types
+
+The focus of this paper is on combina- torial optimization algorithms that automatically perform learning on a chosen implicit distribution of problems. Incorporating ma- chine learning components in the algorithm can achieve this.	
+
+machine learning focuses on performing a task
+given some (finite and usually noisy) data
+
+It is well suited for nat- ural signals for which no clear mathematical formulation emerges because the true data distribution is not known analytically, such
+
+Most of the times, the learning problem has a statistical formulation that is solved through mathematical optimization.
+
+dramatic progress has been achieved with deep learning, an machine learn- ing sub-field building large parametric approximators by compos- ing simpler functions. Deep
+
+From the combinatorial optimization point of view, machine
+learning can help improve an algorithm on a distribution of prob- lem instances in two ways. On
+
+1. On the one side, the researcher as- sumes expert knowledge 2 about the optimization algorithm, but wants to replace some heavy computations by a fast approxi- mation. 
+   * **Learning can be used to build such approximations in a generic way**, i.e. , without the need to derive new explicit algo- rithms.
+
+2. expert knowledge may not be sufficient and some algorithmic decisions may be unsatisfactory. The goal is therefore to **explore the space of these decisions, and learn out of this experience the best performing behavior** (policy), hopefully improving on the state of the art. Even
+
+Even though machine learning is approximate, we will demonstrate through the examples surveyed in this paper that this does not systematically mean that incor- porating learning will compromise overall theoretical guarantees
+
+The challenge in learning is that an algorithm that per- forms well on problem instances used for learning may not work properly on other instances from the true probability distribution
+
+To control this, we monitor the performance of the learned algorithm over another independent set of unseen problem instances. Keeping the perfor- mances similar between the instances used for learning and the unseen ones is known in machine learning as generalizing . Cur-
+
+Without loss of generality, **a combinatorial optimization problem can be formulated as a constrained min-optimization program**
+
+* **Constraints** model natural or imposed restrictions of the problem 
+* **variables** define the decisions to be made
+* the **objective func- tion**, generally a cost to be minimized, defines the measure of the quality of every feasible assignment of values to variables
+
+If the objective and constraints are linear, the problem is called a **lin- ear programming** problem. 
+
+If, in addition, some variables are also restricted to only assume integer values, then the problem is a **mixed-integer linear programming** problem
+
+The set of points that satisfy the constraints is the **feasible region.** 
+
+* Every point in that set (often referred to as a **feasible solu- tion) yields an upper bound on the objective value of the optimal solution**. Exact
+
+* Exact solving is an important aspect of the field, hence a lot of attention is also given to find **lower bounds** to the optimal cost.
+
+* The tighter the lower bounds, with respect to the optimal so- lution value, the higher the chances that the current algorithmic approaches to tackle mixed-integer linear programming described in the following could be successful, i.e. , effective if not effici
+
+**Linear and mixed-integer linear programming** problems are the
+workhorse of **combinatorial optimization** because **they can model a wide variety of problems and are the best understood**, i.e. , there are reliable algorithms and software tools to solve them.
+
+With respect to complexity and solution methods, **linear programming** is a **poly- nomial problem**, well solved, in theory and in practice, through the **simplex algorithm or interior points methods**. 
+
+**Mixed-integer linear programming**, on the other hand, is an **NP-hard** problem, which does not make it hopeless. Indeed, it is easy to see that the com- plexity of mixed-integer linear programming is associated with the integrality requirement on (some of) the variables, which makes the mixed-integer linear programming feasible region nonconvex
+
+the algorithmic line of attack that is used to solve mixed-integer linear programming through a whole ecosystem of branch-and-bound techniques to perform implicit enumeration
+
+All commercial and noncommercial mixed-integer linear pro-
+gramming solvers enhance the above enumeration framework with the extensive use of **cutting planes**, i.e. , valid linear inequalities that are added to the original formulation (especially at the root of the branch-and-bound tree) in the attempt of strengthening its lin- ear programming relaxation
+
+In **supervised learning**, a set of input (fea-
+tures) / target pairs is provided and the task is to find a function that for every input has a predicted output as close as possible to the provided target. Finding such a function is called **learning** and is solved through an **optimization** problem over a family of func- tions. 
+
+* The **loss function**, i.e. , the measure of discrepancy between the output and the target, can be chosen depending on the task (regression, classification, etc. ) and on the optimization methods. 
+* this approach is not enough because the problem has a statistical nature. It is usually easy enough to achieve a good score on the given examples but one wants to achieve a good score on unseen examples (test data). This is known as generalization.
+
+The loss function ? is task dependent ( e.g. , classifica- tion error) and can sometimes be replaced by a surrogate one ( e.g. , a differentiable one). The
+
+The probability distribution is unknown and inaccessible. , it is approximated by the empirical probability distribution over a finite training dataset and the optimization problem is solved
+
+If a model ( i.e. , a family of functions) can represent many differ- ent functions, the model is said to have high capacity and is prone to overfitting: doing well on the training data but not generaliz- ing to the test data.
+
+**Regularization** is anything that can improve the test score at the expense of the training score and is used to restrict the practical capacity of a model. On
+
+if the capacity is too low, the model underfits and performs poorly on both sets. The
+
+he boundary between overfitting and underfitting can be estimated by **changing the effective capacity (the richness of the family of functions reachable by training):** below the critical capacity one underfits and test error decreases with increases in capacity, while above that critical capacity one overfits and test er- ror
+
+**Selecting the best among various trained models cannot be**
+**done on the test set. Selection is a form of optimization, and do- ing so on the test set would bias the estimator in**
+
+To perform **model selection**, a validation dataset D v alid is used to es- timate the generalization error of different machine learning mod- els is necessary.
+
+Model selection can be done based on these esti- mates, and the final unbiased generalization error of the selected model can be computed on the test set. The
+
+The validation set is there- fore often used to select effective capacity, e.g. , by changing the amount of training, the number of parameters θ, and the amount of regularization imposed to the model.
+
+**unsupervised learning** has received so far little attention in conjunction with combinatorial optimization and its immediate use seems difficult, we are not discussing it any further
+
+In **reinforcement learning**, an agent interacts with an environ-
+ment through a markov decision process,
+
+At every time step, the agent is in a given state of the environment and chooses an action according to its (possibly stochastic) policy. As a result, it receives from the environment a reward and enters a new state. T
+
+The goal in reinforcement learning is to train the agent to maximize the expected sum of future rewards, called the return
+
+For a given policy, the expected return given a current state (resp. state and action pair) is known as the **value function** (resp. state action value function). 
+
+Value functions follow the Bellman equa- tion, hence the problem can be **formulated as dynamic programming**, and **solved approximately**. The
+
+The **dynamics of the environment** need not be known by the agent and are learned directly or in- directly, yielding an **exploration vs exploitation dilemma**: choos- ing between exploring new states for refining the knowledge of the environment for possible long-term improvements, or exploit- ing the best-known scenario learned so far (which tends to be in already visited or predictable states).
+
+the simplest neural network architecture, the feedforward neural network (also called an multilayer perceptron),
+
+For every layer, an **affine transformation** is applied on the input vector, followed by a **non-linear scalar function** (named **activation function**) applied element-wise. The
+
+The output of a layer, called **intermediate activa- tions**, is passed on to the next layer
+
+All affine transformations are independent and represented in practice as different **matrices of coefficient**
+
+They are learned, i.e. , **optimized** over, through stochastic gradient descent, the optimization algorithm used to minimize the selected loss function.
+
+The **stochasticity** comes from the **limited number of data points used to compute the loss** before applying a gradient update. In
+
+In practice, gradients are computed using **reverse mode automatic differentiation**, a practical algorithm based on the chain rule, also known as **back-propagation**. Deep
+
+Deep neural networks can be difficult to optimize, and a large variety of techniques have been developed to make the optimization behave better, often by changing architectural designs of the network
+
+have dramatic capacities, i.e. , they can essentially match any dataset, thus being prone to overfitting, they are also heavily regularized. Training
+
+Training them by stochastic gradient descent also regularizes them because of the noise in the gradient, making neural networks generally robust to over- fitting issues, even when they are very large and would overfit if trained with more aggressive optimization. In
+
+many hyper-parameters exist and different combinations are evaluated (known as hyper-parameters optimization). Deep
+
+Deep learning also sets itself apart from more traditional machine learning techniques **by taking as inputs all available raw features of the data**, e.g. , all pixels of an image, while traditional machine learning typi- cally requires to engineer a limited number of domain-specific features.
+
+**recurrent neural network**. These models can operate on sequence data by sharing parameters across different sequence steps. 
+
+* a same neural network block is successively applied at every step of the sequence, i.e. , with the same architecture and parameter values at each time step.
+
+* specificity of such a network is the presence of **recurrent layers**: layers that take as input both the activation vector of the previous layer and its own activation vector on the preceding sequence step (called a hidden state vector), as
+
+ **attention mechanisms .**
+
+* size-invariant technique 
+*  can be used to process data where each data point corresponds to a set. 
+* parameter sharing is used to address the fact that different sets need not to be of the same size
+*  Attention is used to query information about all elements in the set, and merge it for downstream processing in the neural net- work
+*  An **affinity function** takes as input the **query** (which represents any kind of **contextual information which informs where attention should be concentrated**) and a **represen- tation** of an element of the set (both are activation vectors) and outputs a **scalar**. 
+* This is repeated over all elements in the set for the same query. Those scalars are normalized (for instance with a softmax function) and used to define a weighted sum of the representations of elements in the set that can, in turn, be used in the neural network making the query. T
+
+* Attention can be used to build **graph neural network**, i.e. , neural networks able to process graph structured input data, 
+  * every node attends over the set of its neighbors.
+  *  The process is repeated multiple times to gather information about nodes further away. graph neural network can also be understood as a form of message passing (

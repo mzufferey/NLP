@@ -51,3 +51,5 @@ prodigy
 ### Public data
 
 The Colorado Richly Annotated Full-text (CRAFT) cor- pus was used [15]. The corpus consists of 97 full-length biomedical journal articles, and the articles are manually annotated with 10 distinct biomedical ontologies [16].
+
+Pourreza-Shahri M, Kahanda I. ProPheno 1.0: An online dataset for accelerating the complete characterization of the human protein-phenotype landscape in biomedical literature.

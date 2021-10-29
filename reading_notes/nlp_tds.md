@@ -3408,3 +3408,55 @@ A Siamese neural network (sometimes called a twin neural network) is an artifici
  perhaps most well-known application of twin networks are face recognition, where known images of people are precomputed and compared to an image from a turnstile or similar. 
 
 Learning in twin networks can be done with triplet loss or contrastive loss. For learning by triplet loss a baseline vector (anchor image) is compared against a positive vector (truthy image) and a negative vector (falsy image). The negative vector will force learning in the network, while the positive vector will act like a regularizer. For learning by contrastive loss there must be a weight decay to regularize the weights, or some similar operation like a normalization. 
+
+
+
+### [Improving Bi-encoder Document Ranking Models with Two Rankers and Multi-teacher Distillation](https://arxiv.org/abs/2103.06523)
+
+BERT-based Neural Ranking Models (NRMs) can be **classified according to how the query and document are encoded through BERT's self-attention layer**s - 
+
+* bi-encoder 
+  * highly efficient because all the documents can be pre-processed before the query time, but their performance is inferior compared to cross-encoder models
+  * perform two  **independent self-attentions over the query and the document.** 
+  * the BERT self-attention layers of bi-encoder NRMs cannot
+    model the interaction. Therefore, a document is mapped to a f**ixed**
+    **BERT representation regardless of the choice of a query.**
+  *  makes
+    it possible for bi-encoder models to pre-compute document repre-
+    sentations offline, significantly reducing the computational load
+    per query at the time of inference.
+* cross-encoder
+  * perform a full **self-attention over the entire query-document pair**
+  * The BERT layers of cross-encoder NRMs [neural ranking models] can **model the in-**
+    **teraction between a query and a document**, and the resulting BERT
+    representations contain contextualized embedding
+  * cross-encoder models
+    tend to perform better than bi-encoder models but at the expense of
+    a higher computational cost.
+
+Both models utilize a ranker that receives BERT representations as the input and generates a relevance score as the output.
+
+
+
+### [Bi-Encoder vs. Cross-Encoder](https://www.sbert.net/examples/applications/cross-encoder/README.html)
+
+**Bi-Encoders** produce for a given sentence a sentence  embedding. We pass to a BERT independently the sentences A and B, which  result in the sentence embeddings u and v. These **sentence embedding can  then be compared** using cosine similarity
+
+Bi-Encoders are used **whenever you need a sentence embedding in a vector space for  efficient comparison**. Applications are for example Information Retrieval / Semantic Search or Clustering. Cross-Encoders would be the wrong  choice for these application: Clustering 10,000 sentence with  **CrossEncoders would require computing similarity scores for about 50  Million sentence combination**s, which takes about 65 hours. With a  **Bi-Encoder, you compute the embedding for each sentence**, which takes  only 5 seconds. You can then perform the clustering.
+
+In contrast, for a **Cross-Encoder**,  we pass **both  sentences simultaneously** to the Transformer network. It produces than **an output value between 0 and 1 indicating the similarity of the input  sentence pair**:
+
+![BiEncoder](https://raw.githubusercontent.com/UKPLab/sentence-transformers/master/docs/img/Bi_vs_Cross-Encoder.png)
+
+A **Cross-Encoder does not produce a sentence embedding**. 
+
+**we are not able to pass individual sentences to a Cross-Encoder.**
+
+**Cross-Encoder achieve better performances than Bi-Encoders. However, for many application they are not pratical as they do not produce  embeddings we could e.g. index or efficiently compare using cosine  similarity.**
+
+Cross-Encoders can be used whenever you have **a pre-defined set of sentence pairs you want to score.** 
+
+Cross-Encoder achieve higher performance than Bi-Encoders, however, they do not scale well for large datasets. 
+
+ can make sense to combine Cross- and Bi-Encoders, for example in  Information Retrieval / Semantic Search scenarios: First, you use **an  efficient Bi-Encoder to retrieve e.g. the top-100 most similar sentences for a query.** Then, you use **a Cross-Encoder to re-rank these 100 hits by computing the score for every (query, hit) combination.**
+
